@@ -31,3 +31,12 @@ build/
 
 ### VS Code ###
 .vscode/
+
+
+### MacOS ###
+.DS_store
+
+### Temporary files ###
+*.csv
+*.xls
+*.xlsx
