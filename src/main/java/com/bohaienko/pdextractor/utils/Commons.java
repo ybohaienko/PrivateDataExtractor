@@ -7,14 +7,18 @@ import java.util.Arrays;
 
 import static java.util.stream.Collectors.toList;
 
-public class Common {
+public class Commons {
 	public static void checkFileTypeForExtensions(String filePath, Extension[] extensions) {
 		String fileExtension = FilenameUtils.getExtension(filePath);
 		if (!Arrays.stream(extensions).map(Extension::value).collect(toList()).contains(fileExtension))
 			throw new WrongFileTypeException(fileExtension, extensions);
 	}
 
-	public static String getFileName(String path) {
-		return FilenameUtils.getName(path);
+	public static String getFileNameByLocation(String location) {
+		return FilenameUtils.getName(location);
+	}
+
+	public static String getPathByFullLocation(String location) {
+		return FilenameUtils.getFullPath(location);
 	}
 }

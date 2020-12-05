@@ -3,11 +3,12 @@ package com.bohaienko.pdextractor.config;
 import com.bohaienko.pdextractor.model.PrivateDataType;
 import com.bohaienko.pdextractor.repository.individual.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.Map;
 
+@Component
 public class RepoInitializer {
 	@Autowired
 	private AddressAptNumberRepository addressAptNumberRepository;
@@ -54,8 +55,8 @@ public class RepoInitializer {
 	@Autowired
 	private WorkingPlaceRepository workingPlaceRepository;
 
-	public Map<PrivateDataType, JpaRepository> getRepositories() {
-		Map<PrivateDataType, JpaRepository> map = new HashMap<>();
+	public Map<PrivateDataType, CommonPdRepository> getRepositories() {
+		Map<PrivateDataType, CommonPdRepository> map = new HashMap<>();
 		map.put(PrivateDataType.TYPE_FIRST_NAME, firstNameRepository);
 		map.put(PrivateDataType.TYPE_SECOND_NAME, secondNameRepository);
 		map.put(PrivateDataType.TYPE_FATHERS_NAME, fathersNameRepository);

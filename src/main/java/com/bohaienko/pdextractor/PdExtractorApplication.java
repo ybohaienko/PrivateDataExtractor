@@ -1,8 +1,11 @@
 package com.bohaienko.pdextractor;
 
-import com.bohaienko.pdextractor.service.DdxService;
+import com.bohaienko.pdextractor.repository.DocumentPersistenceDataRepository;
+import com.bohaienko.pdextractor.repository.individual.*;
+import com.bohaienko.pdextractor.service.client.DdxClient;
+import com.bohaienko.pdextractor.service.FileProcessor;
 import com.bohaienko.pdextractor.service.PDProcessor;
-import com.bohaienko.pdextractor.service.PDTypeRecognizer;
+import com.bohaienko.pdextractor.service.PDTypeProcessor;
 import com.dropbox.core.v2.files.FileMetadata;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -16,13 +19,30 @@ import java.io.File;
 public class PdExtractorApplication {
 
 	@Autowired
-	DdxService ddxService;
+	DdxClient ddxService;
 
 	@Autowired
-	PDTypeRecognizer pdTypeProcessor;
+	PDTypeProcessor pdTypeProcessor;
 
 	@Autowired
 	PDProcessor pdProcessor;
+
+	@Autowired
+	FileProcessor fileProcessor;
+
+	@Autowired
+	private FathersNameRepository fathersNameRepository;
+	@Autowired
+	private SecondNameRepository secondNameRepository;
+	@Autowired
+	private FirstNameRepository firstNameRepository;
+	@Autowired
+	private PhoneNumberRepository phoneNumberRepository;
+	@Autowired
+	private IndividualRepository individualRepository;
+	@Autowired
+	private DocumentPersistenceDataRepository documentRepository;
+
 
 	public static void main(String[] args) {
 		SpringApplication.run(PdExtractorApplication.class, args);
@@ -31,16 +51,43 @@ public class PdExtractorApplication {
 	@EventListener(ApplicationReadyEvent.class)
 	public void some() {
 		File f = new File("temp");
-//		f.mkdir();
-//		ddxService.getDdxFilePaths().forEach(e -> {
-//			FileMetadata metadata = ddxService.downloadDdxFiles(e, f.getPath() + File.separator);
-//			pdTypeProcessor.processColumnType(f.getPath() + File.separator + metadata.getName(), 0, metadata.getPathLower());
-//		});
-//		f.delete();
+		f.mkdir();
+		ddxService.getDdxFilePaths().forEach(filePath -> {
+			FileMetadata metadata = ddxService.downloadDdxFiles(filePath, f.getPath() + File.separator);
+
+			String tempLocalFilePath = f.getPath() + File.separator + metadata.getName();
+			int pdTypeProcessorFileLines = 10;
+			Long docId = pdTypeProcessor.processColumnsType(tempLocalFilePath, pdTypeProcessorFileLines, metadata.getPathLower());
+
+			pdProcessor.process(
+					fileProcessor.retrievePayloadFromFileByDocument(tempLocalFilePath, docId));
+		});
+		f.delete();
 
 //		pdTypeProcessor.processColumnType("temp/" + "rec_test.csv", 0, "somePath");
 
+//		Individual individual = individualRepository.save(new Individual(UUID.randomUUID()));
+//		Individual individual2 = individualRepository.save(new Individual(UUID.randomUUID()));
+//		DocumentPersistenceData doc = documentRepository.save(new DocumentPersistenceData("some2.file", "/root/"));
+//		DocumentPersistenceData doc2 = documentRepository.save(new DocumentPersistenceData("some.file", "/root/"));
+//
+//		fathersNameRepository.save(new FathersName("Ivanovych", doc, individual));
+//		firstNameRepository.save(new FirstName("Ivan", doc, individual));
+//
+//		fathersNameRepository.save(new FathersName("Petrovych", doc2, individual2));
+//		secondNameRepository.save(new SecondName("Melnyk", doc2, individual2));
+//		firstNameRepository.save(new FirstName("Petro", doc2, individual2));
+//		phoneNumberRepository.save(new PhoneNumber("+380501234567", doc2, individual2));
+//
+//		firstNameRepository.save(new FirstName("some", doc, individual));
+//
+//		pdProcessor.process(pdProcessor.createDummy());
 
-		pdProcessor.process(pdProcessor.createDummy());
+//		try {
+//			Class<?> clazz = Class.forName(FirstName.class.getName());
+//			Constructor<?> ctor = clazz.getConstructor(String.class, DocumentPersistenceData.class, Individual.class);
+//			firstNameRepository.save(ctor.newInstance("some", doc, individual));
+//		} catch (Exception e) {
+//		}
 	}
 }

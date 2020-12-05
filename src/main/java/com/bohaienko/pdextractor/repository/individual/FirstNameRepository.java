@@ -1,7 +1,12 @@
 package com.bohaienko.pdextractor.repository.individual;
 
+import com.bohaienko.pdextractor.model.individual.CommonPd;
 import com.bohaienko.pdextractor.model.individual.FirstName;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.apache.poi.ss.formula.functions.T;
 
-public interface FirstNameRepository extends JpaRepository<FirstName, Long> {
+import java.util.List;
+
+public interface FirstNameRepository extends CommonPdRepository<FirstName, Long> {
+	@Override
+	List<FirstName> findByValue(String value);
 }

@@ -2,7 +2,6 @@ package com.bohaienko.pdextractor.model.common;
 
 import lombok.*;
 
-import javax.persistence.Entity;
 import java.util.List;
 
 @Getter

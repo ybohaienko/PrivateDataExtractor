@@ -1,10 +1,10 @@
 package com.bohaienko.pdextractor.service;
 
 import com.bohaienko.pdextractor.model.PrivateDataType;
-import com.bohaienko.pdextractor.model.common.ColumnPersistenceData;
+import com.bohaienko.pdextractor.model.common.ColumnsPersistenceData;
 import com.bohaienko.pdextractor.model.common.DocumentData;
 import com.bohaienko.pdextractor.model.common.DocumentPersistenceData;
-import com.bohaienko.pdextractor.repository.ColumnPersistenceDataRepository;
+import com.bohaienko.pdextractor.repository.ColumnsPersistenceDataRepository;
 import com.bohaienko.pdextractor.repository.DocumentPersistenceDataRepository;
 import com.bohaienko.pdextractor.service.parser.CommonParser;
 import com.bohaienko.pdextractor.service.parser.CsvParser;
@@ -15,23 +15,28 @@ import org.springframework.stereotype.Component;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import static com.bohaienko.pdextractor.utils.Common.getFileName;
+import static com.bohaienko.pdextractor.utils.Commons.getFileNameByLocation;
 
 @Log4j2
 @Component
-public class PDTypeRecognizer {
+public class PDTypeProcessor {
+	@Autowired
+	CommonParser commonParser;
+
 	@Autowired
 	DocumentPersistenceDataRepository docRepository;
 
 	@Autowired
-	ColumnPersistenceDataRepository columnRepository;
+	ColumnsPersistenceDataRepository colRepository;
 
-	public void processColumnType(String filePath, int lines, String initialSourcePath) {
-		DocumentData data = new CommonParser().getDocumentData(filePath, lines, initialSourcePath);
+	public Long processColumnsType(String tempFilePath, int lines, String initialSourcePath) {
+		DocumentData data = commonParser.getDocumentData(tempFilePath, lines, initialSourcePath);
 		DocumentData dataWithColumnTypes = getColumnSpecsByHeaders(data);
 		DocumentData dataWithColumnTypesByValue = getColumnSpecByColumnValues(dataWithColumnTypes);
 
 		dataWithColumnTypesByValue.getColumnData().forEach(columnData -> {
+			log.info("Processing a type of the column with the header: {}", columnData.getHeader());
+
 			Map<PrivateDataType, Integer> scoreSet = columnData.getColumnTypeScoresByColumnValues();
 			int dictRecognizedHighestValue = columnData.getColumnTypeScoresByColumnValues() != null
 					? Collections.max(scoreSet.values())
@@ -48,12 +53,12 @@ public class PDTypeRecognizer {
 			}
 		});
 
-		DocumentPersistenceData doc = docRepository.save(new DocumentPersistenceData(getFileName(filePath), initialSourcePath));
+		DocumentPersistenceData doc = docRepository.save(new DocumentPersistenceData(getFileNameByLocation(tempFilePath), initialSourcePath));
 		dataWithColumnTypesByValue.getColumnData().forEach(c -> {
-			System.out.println(c.getExpectedColumnType());
-			long id = columnRepository.save(new ColumnPersistenceData(c.getPositionNumber(), c.getExpectedColumnType().name(), doc)).getId();
-//			System.out.println(columnRepository.getOne(id).toString());
+			colRepository.save(new ColumnsPersistenceData(c.getPositionNumber(), c.getHeader(), c.getExpectedColumnType().name(), doc));
 		});
+
+		return doc.getId();
 	}
 
 	private DocumentData getColumnSpecByColumnValues(DocumentData data) {

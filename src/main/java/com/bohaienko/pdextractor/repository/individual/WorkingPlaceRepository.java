@@ -1,7 +1,10 @@
 package com.bohaienko.pdextractor.repository.individual;
 
 import com.bohaienko.pdextractor.model.individual.WorkingPlace;
-import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface WorkingPlaceRepository extends JpaRepository<WorkingPlace, Long> {
+import java.util.List;
+
+public interface WorkingPlaceRepository extends CommonPdRepository<WorkingPlace, Long> {
+	@Override
+	List<WorkingPlace> findByValue(String value);
 }

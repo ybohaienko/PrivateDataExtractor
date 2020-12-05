@@ -9,10 +9,10 @@ import javax.persistence.*;
 @Entity
 @Getter
 @Setter
-@AllArgsConstructor
+@NoArgsConstructor
 @EqualsAndHashCode(callSuper = false)
 @ToString
-public class FirstName {
+public class FirstName extends CommonPd {
 	@Id
 	@NotNull
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,4 +29,10 @@ public class FirstName {
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "individual_id", nullable = false)
 	private Individual individual;
+
+	public FirstName(String value, DocumentPersistenceData srcDoc, Individual individual) {
+		this.value = value;
+		this.srcDoc = srcDoc;
+		this.individual = individual;
+	}
 }

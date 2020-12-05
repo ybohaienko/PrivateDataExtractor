@@ -1,4 +1,4 @@
-package com.bohaienko.pdextractor.service;
+package com.bohaienko.pdextractor.service.client;
 
 import com.dropbox.core.DbxException;
 import com.dropbox.core.DbxRequestConfig;
@@ -6,10 +6,10 @@ import com.dropbox.core.v2.DbxClientV2;
 import com.dropbox.core.v2.files.FileMetadata;
 import com.dropbox.core.v2.files.ListFolderResult;
 import com.dropbox.core.v2.files.Metadata;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -18,8 +18,9 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
+@Log4j2
 @Component
-public class DdxService {
+public class DdxClient {
 
 	@Value("${service.ddx.token}")
 	public String ACCESS_TOKEN;
@@ -51,6 +52,7 @@ public class DdxService {
 	public FileMetadata downloadDdxFiles(Path srcPath, String outputPath) {
 		OutputStream downloadFile = null;
 		FileMetadata metadata = null;
+		log.info("Downloading discovered file: {}", srcPath);
 		try {
 			downloadFile = new FileOutputStream(outputPath + srcPath.getFileName().toString());
 			metadata = client.files().downloadBuilder(srcPath.toString())

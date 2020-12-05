@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static com.bohaienko.pdextractor.utils.Common.checkFileTypeForExtensions;
+import static com.bohaienko.pdextractor.utils.Commons.checkFileTypeForExtensions;
 
 public class CsvParser extends CommonParser {
 	public DocumentData getDocumentData(String path, int lines) {

@@ -1,7 +1,5 @@
 package com.bohaienko.pdextractor.model.common;
 
-import com.bohaienko.pdextractor.model.PrivateDataType;
-import com.bohaienko.pdextractor.model.individual.Individual;
 import com.sun.istack.NotNull;
 import lombok.*;
 
@@ -14,7 +12,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @ToString
 @EqualsAndHashCode
-public class ColumnPersistenceData {
+public class ColumnsPersistenceData {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -22,15 +20,18 @@ public class ColumnPersistenceData {
 	@NotNull
 	int columnPositionNumber;
 	@NotNull
-	String columnPiiType;
+	String columnHeader;
+	@NotNull
+	String columnRecognizedPiiType;
 
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "document_id", nullable = false)
 	private DocumentPersistenceData document;
 
-	public ColumnPersistenceData(int columnPositionNumber, String  columnPiiType, DocumentPersistenceData document) {
+	public ColumnsPersistenceData(int columnPositionNumber, String columnHeader, String columnRecognizedPiiType, DocumentPersistenceData document) {
 		this.columnPositionNumber = columnPositionNumber;
-		this.columnPiiType = columnPiiType;
+		this.columnHeader = columnHeader;
+		this.columnRecognizedPiiType = columnRecognizedPiiType;
 		this.document = document;
 	}
 }

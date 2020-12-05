@@ -1,9 +1,6 @@
 package com.bohaienko.pdextractor.service.parser;
 
 import com.bohaienko.pdextractor.model.Extension;
-import com.bohaienko.pdextractor.model.PrivateDataType;
-import com.bohaienko.pdextractor.model.common.ColumnData;
-import com.bohaienko.pdextractor.model.common.DocumentData;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
@@ -13,9 +10,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
 
-import static com.bohaienko.pdextractor.utils.Common.checkFileTypeForExtensions;
+import static com.bohaienko.pdextractor.utils.Commons.checkFileTypeForExtensions;
 
 public class XlsParser extends CommonParser{
 	public List<Map<String, String>> getAllValuesByPathOfLines(String path, int lines) {
