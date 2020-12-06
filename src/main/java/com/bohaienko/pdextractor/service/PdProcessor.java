@@ -20,7 +20,7 @@ import static java.util.stream.Collectors.toList;
 
 @Log4j2
 @Component
-public class PDProcessor {
+public class PdProcessor {
 
 	@Autowired
 	private IndividualRepository individualRepository;
@@ -29,7 +29,7 @@ public class PDProcessor {
 	private RepoInitializer repoInitializer;
 
 	@Autowired
-	private PDTypeProcessor pdTypeProcessor;
+	private PdTypeProcessor pdTypeProcessor;
 
 	@Autowired
 	private GenericInstanceCreator genericInstanceCreator;

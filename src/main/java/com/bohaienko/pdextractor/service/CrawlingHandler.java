@@ -18,10 +18,10 @@ public class CrawlingHandler {
 	DropBoxClient ddxService;
 
 	@Autowired
-	PDTypeProcessor pdTypeProcessor;
+	PdTypeProcessor pdTypeProcessor;
 
 	@Autowired
-	PDProcessor pdProcessor;
+	PdProcessor pdProcessor;
 
 	@Autowired
 	FileProcessor fileProcessor;

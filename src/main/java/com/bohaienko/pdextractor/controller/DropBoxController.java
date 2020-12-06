@@ -6,19 +6,21 @@ import com.bohaienko.pdextractor.model.message.ResponseStatusMessage;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import static com.bohaienko.pdextractor.utils.Commons.timestamp;
 
 @Log4j2
 @RestController
+@RequestMapping(value = "/dropbox")
 class DropBoxController extends BaseController {
 
-	@PostMapping("/dropbox/start")
+	@PostMapping("/start")
 	private ResponseStatusMessage start(@RequestBody DropBoxToken dropBoxToken) {
 		thread = new Thread(() -> crawlingHandler.crawlDropbox(dropBoxToken.getToken()));
 		try {
-			log.info("================== Cycle num: {} ==================", cycleCounter++);
+			log.info("================== Crawling cycle num: {} ==================", cycleCounter++);
 			thread.start();
 			log.info("STARTED DropBox crawling process at: {}", timestamp());
 		} catch (Exception e) {
@@ -27,15 +29,25 @@ class DropBoxController extends BaseController {
 		return new ResponseStatusMessage(MessageStatuses.SUCCESS);
 	}
 
-	@PostMapping("/dropbox/stop")
+	@PostMapping("/stop")
 	private ResponseStatusMessage stop() {
 		try {
 			thread.interrupt();
 			thread.join();
 			log.info("STOPPED DropBox crawling process at: {}", timestamp());
-		} catch (Exception e) {
-			log.error(e.getMessage());
+		} catch (InterruptedException | NullPointerException ignored) {
 		}
 		return new ResponseStatusMessage(MessageStatuses.SUCCESS);
+	}
+
+	@PostMapping("/status")
+	private ResponseStatusMessage status() {
+		boolean status = false;
+		try {
+			status = thread.isAlive();
+			log.info("REQUESTED DropBox crawling process state: {}", timestamp());
+		} catch (NullPointerException ignored) {
+		}
+		return new ResponseStatusMessage(status ? MessageStatuses.ACTIVE : MessageStatuses.STOPPED);
 	}
 }

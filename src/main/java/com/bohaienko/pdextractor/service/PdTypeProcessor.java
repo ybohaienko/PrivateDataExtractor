@@ -20,7 +20,8 @@ import static com.bohaienko.pdextractor.utils.Commons.getLocationByFullPath;
 
 @Log4j2
 @Component
-public class PDTypeProcessor {
+public class PdTypeProcessor {
+
 	@Autowired
 	CommonParser commonParser;
 
