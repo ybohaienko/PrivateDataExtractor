@@ -23,7 +23,7 @@ public class FathersName extends CommonPd {
 	private DocumentPersistenceData srcDoc;
 
 	@ManyToOne(fetch = FetchType.EAGER, optional = false)
-	@JoinColumn(name = "individual_id", nullable = false)
+	@JoinColumn(name = "individual_id")
 	private Individual individual;
 
 	public FathersName(String value, DocumentPersistenceData srcDoc, Individual individual) {

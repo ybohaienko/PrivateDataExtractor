@@ -30,7 +30,8 @@ public class Commons {
 		return new SimpleDateFormat(pattern).format(new Date());
 	}
 
-	public static boolean valuesEmpty(Map<String, String> map) {
-		return map.values().stream().allMatch(v -> v == null || v.trim().isEmpty());
+	public static Map<String, String> removeEmptyValues(Map<String, String> map) {
+		map.values().removeIf(v -> v.isEmpty() || v.equals(" "));
+		return map;
 	}
 }

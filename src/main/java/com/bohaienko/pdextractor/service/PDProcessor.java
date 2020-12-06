@@ -52,29 +52,43 @@ public class PDProcessor {
 				if (privateDataTypeList.containsAll(Arrays.asList(uniqueTypesSet))) {
 					Long individualId = checkUniqueSetExistsForIndividual(row, uniqueTypesSet);
 					if (individualId != null)
-						saveIndividualAttributes(Objects.requireNonNull(individualRepository.findById(individualId).orElse(null)), row);
+						saveAttributes(Objects.requireNonNull(individualRepository.findById(individualId).orElse(null)), row);
 					else
-						saveIndividualAttributes(individualRepository.save(new Individual(UUID.randomUUID())), row);
+						saveAttributes(individualRepository.save(new Individual(UUID.randomUUID())), row);
 				} else {
-					saveIndividualAttributes(null,row);
+					saveAttributes(row);
 				}
 			});
 		});
 	}
 
-	private void saveIndividualAttributes(Individual individual, List<PrivateDataValue> privateDataValues) {
+	private void saveAttributes(Individual individual, List<PrivateDataValue> privateDataValues) {
 		log.info("Saving private data values for the individual with UUID: {}", individual.getUuid());
 		privateDataValues.forEach(value -> {
-			String srcDocPath = value.getFullPath();
-			DocumentPersistenceData doc = retrieveSavedDocumentByPath(srcDocPath);
-			if (doc == null)
-				doc = new DocumentPersistenceData(
-						getFileNameByFullPath(srcDocPath),
-						getLocationByFullPath(srcDocPath)
-				);
+			DocumentPersistenceData doc = getDocument(value);
 			genericInstanceCreator.saveGeneric(value.getType(), value.getValue(), doc, individual);
 		});
 	}
+
+	private void saveAttributes(List<PrivateDataValue> privateDataValues) {
+		log.info("Saving private data values without an individual");
+		privateDataValues.forEach(value -> {
+			DocumentPersistenceData doc = getDocument(value);
+			genericInstanceCreator.saveGeneric(value.getType(), value.getValue(), doc, null);
+		});
+	}
+
+	private DocumentPersistenceData getDocument(PrivateDataValue value) {
+		String srcDocPath = value.getFullPath();
+		DocumentPersistenceData doc = retrieveSavedDocumentByPath(srcDocPath);
+		if (doc == null)
+			return new DocumentPersistenceData(
+					getFileNameByFullPath(srcDocPath),
+					getLocationByFullPath(srcDocPath)
+			);
+		return doc;
+	}
+
 
 	private DocumentPersistenceData retrieveSavedDocumentByPath(String fullPath) {
 		return docRepository.findByDocumentNameAndDocumentPath(

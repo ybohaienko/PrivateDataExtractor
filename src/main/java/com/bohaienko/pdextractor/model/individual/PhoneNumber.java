@@ -25,8 +25,8 @@ public class PhoneNumber extends CommonPd {
 	@JoinColumn(name = "document_id", nullable = false)
 	private DocumentPersistenceData srcDoc;
 
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name = "individual_id", nullable = false)
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "individual_id")
 	private Individual individual;
 
 	public PhoneNumber(String value, DocumentPersistenceData srcDoc, Individual individual) {

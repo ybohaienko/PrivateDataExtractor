@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.util.*;
 
 import static com.bohaienko.pdextractor.utils.Commons.checkFileTypeForExtensions;
-import static com.bohaienko.pdextractor.utils.Commons.valuesEmpty;
+import static com.bohaienko.pdextractor.utils.Commons.removeEmptyValues;
 import static com.fasterxml.jackson.dataformat.csv.CsvParser.Feature.SKIP_EMPTY_LINES;
 import static com.fasterxml.jackson.dataformat.csv.CsvParser.Feature.TRIM_SPACES;
 
@@ -25,8 +25,7 @@ public class CsvParserService extends CommonParser {
 		int counter = 0;
 		while (Objects.requireNonNull(it).hasNext()) {
 			Map<String, String> row = it.next();
-			if (!valuesEmpty(row))
-				data.add(row);
+				data.add(removeEmptyValues(row));
 			counter++;
 			if (lines > 0 && counter == lines) break;
 		}

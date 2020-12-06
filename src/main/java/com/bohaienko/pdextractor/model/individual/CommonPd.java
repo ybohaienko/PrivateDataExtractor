@@ -23,8 +23,8 @@ public class CommonPd {
 	@JoinColumn(name = "document_id", nullable = false)
 	private DocumentPersistenceData srcDoc;
 
-	@ManyToOne(fetch = FetchType.EAGER, optional = false)
-	@JoinColumn(name = "individual_id", nullable = true)
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "individual_id")
 	private Individual individual;
 
 	public CommonPd(String value, DocumentPersistenceData srcDoc, Individual individual) {
