@@ -1,6 +1,6 @@
 package com.bohaienko.pdextractor.repository;
 
-import com.bohaienko.pdextractor.model.common.ColumnsPersistenceData;
+import com.bohaienko.pdextractor.model.ColumnsPersistenceData;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

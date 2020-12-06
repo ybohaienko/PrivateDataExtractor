@@ -1,7 +1,7 @@
 package com.bohaienko.pdextractor.config;
 
 import com.bohaienko.pdextractor.model.PrivateDataType;
-import com.bohaienko.pdextractor.repository.individual.*;
+import com.bohaienko.pdextractor.repository.pdTypeValues.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

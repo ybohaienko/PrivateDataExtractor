@@ -1,7 +1,7 @@
 package com.bohaienko.pdextractor.controller;
 
-import com.bohaienko.pdextractor.model.individual.Individual;
-import com.bohaienko.pdextractor.repository.individual.IndividualRepository;
+import com.bohaienko.pdextractor.model.Individual;
+import com.bohaienko.pdextractor.repository.IndividualRepository;
 import com.bohaienko.pdextractor.utils.IndividualNotFoundException;
 import org.springframework.web.bind.annotation.*;
 

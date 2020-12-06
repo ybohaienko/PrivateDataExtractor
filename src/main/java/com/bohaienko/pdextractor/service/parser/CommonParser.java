@@ -1,8 +1,8 @@
 package com.bohaienko.pdextractor.service.parser;
 
 import com.bohaienko.pdextractor.model.PrivateDataType;
-import com.bohaienko.pdextractor.model.common.ColumnData;
-import com.bohaienko.pdextractor.model.common.DocumentData;
+import com.bohaienko.pdextractor.model.occasional.ColumnData;
+import com.bohaienko.pdextractor.model.occasional.DocumentData;
 import lombok.extern.log4j.Log4j2;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.stereotype.Component;

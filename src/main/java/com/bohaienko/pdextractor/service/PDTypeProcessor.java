@@ -1,9 +1,9 @@
 package com.bohaienko.pdextractor.service;
 
 import com.bohaienko.pdextractor.model.PrivateDataType;
-import com.bohaienko.pdextractor.model.common.ColumnsPersistenceData;
-import com.bohaienko.pdextractor.model.common.DocumentData;
-import com.bohaienko.pdextractor.model.common.DocumentPersistenceData;
+import com.bohaienko.pdextractor.model.ColumnsPersistenceData;
+import com.bohaienko.pdextractor.model.occasional.DocumentData;
+import com.bohaienko.pdextractor.model.DocumentPersistenceData;
 import com.bohaienko.pdextractor.repository.ColumnsPersistenceDataRepository;
 import com.bohaienko.pdextractor.repository.DocumentPersistenceDataRepository;
 import com.bohaienko.pdextractor.service.parser.CommonParser;
