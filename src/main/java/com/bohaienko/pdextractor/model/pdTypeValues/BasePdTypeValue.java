@@ -21,20 +21,17 @@ public class BasePdTypeValue {
 
 	private String value;
 
-	@ManyToOne(fetch = FetchType.EAGER, optional = false,cascade = CascadeType.MERGE)
-	@JoinColumn(name = "document_id",
-			nullable = false,
-			insertable = false,
-			updatable = false)
-	private SourceDocument sourceDocument;
+	@ManyToOne(fetch = FetchType.EAGER, optional = false)
+	@JoinColumn(name = "document_id", nullable = false)
+	private SourceDocument document;
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "individual_id")
 	private Individual individual;
 
-	public BasePdTypeValue(String value, SourceDocument sourceDocument, Individual individual) {
+	public BasePdTypeValue(String value, SourceDocument document, Individual individual) {
 		this.value = value;
-		this.sourceDocument = sourceDocument;
+		this.document = document;
 		this.individual = individual;
 	}
 }

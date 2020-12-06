@@ -14,6 +14,7 @@ import javax.persistence.*;
 		}))
 @Getter
 @Setter
+@Transactional
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString

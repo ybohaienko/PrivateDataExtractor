@@ -1,8 +1,5 @@
 package com.bohaienko.pdextractor;
 
-import com.bohaienko.pdextractor.model.Individual;
-import com.bohaienko.pdextractor.model.SourceDocument;
-import com.bohaienko.pdextractor.model.pdTypeValues.FirstName;
 import com.bohaienko.pdextractor.repository.IndividualRepository;
 import com.bohaienko.pdextractor.repository.SourceDocumentRepository;
 import com.bohaienko.pdextractor.repository.pdTypeValues.FirstNameRepository;
@@ -11,8 +8,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
-
-import java.util.UUID;
 
 @SpringBootApplication
 public class PdExtractorApplication {
@@ -34,5 +29,11 @@ public class PdExtractorApplication {
 //		Individual individual = individualRepository.save(new Individual(UUID.randomUUID()));
 //		System.out.println(document);
 //		System.out.println(individual);
+//		firstNameRepository.save(new FirstName("sss", document, individual));
+//
+//		SomeDocument doc = someDocumentRepository.save(new SomeDocument("lol"));
+//		System.out.println("===="+doc);
+//		SomeValue value = someValueRepository.save(new SomeValue("lol", doc));
+//		System.out.println("===="+value);
 //	}
 }
