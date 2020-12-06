@@ -3,6 +3,7 @@ package com.bohaienko.pdextractor.service.parser;
 import com.bohaienko.pdextractor.model.PrivateDataType;
 import com.bohaienko.pdextractor.model.common.ColumnData;
 import com.bohaienko.pdextractor.model.common.DocumentData;
+import lombok.extern.log4j.Log4j2;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.stereotype.Component;
 
@@ -14,6 +15,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.bohaienko.pdextractor.model.Extension.*;
 
+@Log4j2
 @Component
 public class CommonParser {
 	public DocumentData getDocumentData(String tempLocalFilePath, int lines, String srcFilePath) {
@@ -35,23 +37,27 @@ public class CommonParser {
 
 	private DocumentData parseToDocumentData(List<Map<String, String>> data, String sourcePath) {
 		List<ColumnData> columnDataList = new ArrayList<>();
-		AtomicInteger columnCounter = new AtomicInteger();
-		data.get(0).forEach((header, value) -> columnDataList.add(
-				new ColumnData(
-						columnCounter.getAndIncrement(),
-						header,
-						new ArrayList<>(),
-						PrivateDataType.TYPE_NONE,
-						new HashMap<>()
-				)
-		));
-		data.forEach(row -> row.forEach((header, value) -> {
-			columnDataList.stream()
-					.filter(e -> e.getHeader().equals(header))
-					.findAny()
-					.orElseThrow(IllegalArgumentException::new)
-					.getColumnValues().add(value);
-		}));
+		try {
+			AtomicInteger columnCounter = new AtomicInteger();
+			data.get(0).forEach((header, value) -> columnDataList.add(
+					new ColumnData(
+							columnCounter.getAndIncrement(),
+							header,
+							new ArrayList<>(),
+							PrivateDataType.TYPE_NONE,
+							new HashMap<>()
+					)
+			));
+			data.forEach(row -> row.forEach((header, value) -> {
+				columnDataList.stream()
+						.filter(e -> e.getHeader().equals(header))
+						.findAny()
+						.orElseThrow(IllegalArgumentException::new)
+						.getColumnValues().add(value);
+			}));
+		} catch (Exception e) {
+			log.error(e.getMessage());
+		}
 		return new DocumentData(columnDataList, sourcePath);
 	}
 }

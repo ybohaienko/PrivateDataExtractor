@@ -1,6 +1,7 @@
 package com.bohaienko.pdextractor.service.parser;
 
 import com.bohaienko.pdextractor.model.Extension;
+import lombok.extern.log4j.Log4j2;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
@@ -12,6 +13,7 @@ import java.util.*;
 
 import static com.bohaienko.pdextractor.utils.Commons.checkFileTypeForExtensions;
 
+@Log4j2
 class XlsParser extends CommonParser {
 	List<Map<String, String>> getAllValuesByPathOfLines(String path, int lines) {
 		checkFileTypeForExtensions(path, new Extension[]{Extension.XLS, Extension.XLSX});

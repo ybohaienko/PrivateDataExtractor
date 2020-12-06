@@ -86,13 +86,13 @@ public class PDTypeProcessor {
 
 	private Map<PrivateDataType, Integer> checkDictionaries(List<String> columnValues) {
 		Map<String, List<String>> dict = new CsvParser().getValuesInColumnsByFilePath("src/main/resources/recognition/dict.csv");
-		StringComparatorService comparator = new StringComparatorService();
+		StringsComparator comparator = new StringsComparator();
 		Map<PrivateDataType, Integer> scoreSet = supplyScoreSet();
 		AtomicBoolean isMatch = new AtomicBoolean(false);
 		columnValues.forEach(value -> dict.forEach((privateDataType, dictValues) -> {
 			PrivateDataType type = PrivateDataType.valueOf(privateDataType);
 			dictValues.forEach(dictValue -> {
-				if (comparator.calculateScore(value, dictValue) < 1) {
+				if (comparator.calculateResemblanseScore(value, dictValue) < 1) {
 					Integer scoreValue = scoreSet.get(type);
 					scoreSet.put(type, scoreValue + 1);
 					isMatch.set(true);
@@ -128,8 +128,8 @@ public class PDTypeProcessor {
 	private DocumentData getColumnSpecsByHeaders(DocumentData documentData) {
 		documentData.getColumnData().forEach(column -> {
 			Map<PrivateDataType, Integer> scoreSet = supplyScoreSet();
-			StringComparatorService comparator = new StringComparatorService();
-			scoreSet.forEach((k, v) -> scoreSet.put(k, comparator.calculateScore(k.name(), column.getHeader())));
+			StringsComparator comparator = new StringsComparator();
+			scoreSet.forEach((k, v) -> scoreSet.put(k, comparator.calculateResemblanseScore(k.name(), column.getHeader())));
 			PrivateDataType type = scoreSet.entrySet().stream()
 					.filter(x -> x.getValue().equals(Collections.min(scoreSet.values())))
 					.findFirst()

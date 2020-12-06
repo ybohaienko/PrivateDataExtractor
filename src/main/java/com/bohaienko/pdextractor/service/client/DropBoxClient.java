@@ -20,33 +20,24 @@ import java.util.List;
 
 @Log4j2
 @Component
-public class DdxClient {
+public class DropBoxClient {
 
-	@Value("${service.ddx.token}")
+	@Value("${service.dpx.token}")
 	public String ACCESS_TOKEN;
 
 	private static DbxClientV2 client;
+	private DbxRequestConfig config;
 
-	public List<Path> getDdxFilePaths() {
-		DbxRequestConfig config = new DbxRequestConfig("DipAcc");
+	public List<Path> enableDpxDiscovery() {
+		config = new DbxRequestConfig("DipAcc");
 		client = new DbxClientV2(config, ACCESS_TOKEN);
+		return retrieveFilePaths();
+	}
 
-		List<Path> filePaths = null;
-		try {
-			ListFolderResult result = client.files().listFolderBuilder("").withRecursive(true).start();
-			filePaths = new ArrayList<>();
-			while (true) {
-				for (Metadata metadata : result.getEntries())
-					if (metadata instanceof FileMetadata) filePaths.add(Paths.get(metadata.getPathLower()));
-
-				if (!result.getHasMore()) break;
-
-				result = client.files().listFolderContinue(result.getCursor());
-			}
-		} catch (DbxException e) {
-			e.printStackTrace();
-		}
-		return filePaths;
+	public List<Path> enableDpxDiscoveryForToken(String accessToken) {
+		config = new DbxRequestConfig("DipAcc");
+		client = new DbxClientV2(config, accessToken);
+		return retrieveFilePaths();
 	}
 
 	public FileMetadata downloadDdxFiles(Path srcPath, String outputPath) {
@@ -66,5 +57,23 @@ public class DdxClient {
 			e.printStackTrace();
 		}
 		return metadata;
+	}
+
+	private List<Path> retrieveFilePaths() {
+		List<Path> filePaths = null;
+		try {
+			ListFolderResult result = client.files().listFolderBuilder("").withRecursive(true).start();
+			filePaths = new ArrayList<>();
+			while (true) {
+				for (Metadata metadata : result.getEntries())
+					if (metadata instanceof FileMetadata) filePaths.add(Paths.get(metadata.getPathLower()));
+
+				if (!result.getHasMore()) break;
+				result = client.files().listFolderContinue(result.getCursor());
+			}
+		} catch (DbxException e) {
+			e.printStackTrace();
+		}
+		return filePaths;
 	}
 }

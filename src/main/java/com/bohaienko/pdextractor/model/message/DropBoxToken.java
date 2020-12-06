@@ -1,10 +1,14 @@
 package com.bohaienko.pdextractor.model.message;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class DdxToken {
+@AllArgsConstructor
+@NoArgsConstructor
+public class DropBoxToken {
 	private String token;
 }
