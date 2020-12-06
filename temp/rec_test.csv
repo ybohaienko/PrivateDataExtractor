@@ -1,6 +1,0 @@
-FIRST_NAME,SECOND_NAME,FATHERS_NAME,ID_TAX_NUMBER,PASSPORT_NUMBER,FOREIGN_PASSPORT_NUMBER,PHONE_NUMBER,EMAIL,WEBSITE,ADDRESS_COUNTRY,ADDRESS_CITY,ADDRESS_STREET_NUMBER,ADDRESS_APT_NUMBER,WORKING_PLACE,PROFESSION
-Ivan,Іванисик,Василь,1234567890,987654321,FN123456,380501234567,some@some.so,some.so,Ukraine,Kyiv,вул. Грушевського 12,Кв. 11,"ПАТ ""НАФТОГАЗБУД-УКРАЇНА""",бактеріолог
-Serhiy,Орлов,Andrii,2345678901,КЕ123456,CS123456,-380,1some@some.so,1some.so,Ukraine,"Kyiv,Some str","Провулок Іванова,  1",Офіс 12,ТОВ МЕТІНВЕСТ-ПРОМСЕРВІС,Аналітик
-Kivan,Руденко,Mykola,3456789012,ВС567890,FG123456,380501234567,2some@some.so,2some.so,Ukraine,Kyiv,"1б, Пр-т Перемога",Квартира 113,"ТОВ ""ДП ""ЕНЕРГОРИНОК""",Менеджер
-Віталій,Бондар,Степан,5678901234,987654312,FM123456,501234567,3some@some.so,3some.so,Ukraine,Kyiv,вул. П.Вершигори 1-а,оф. 1,"АТ ""УКРЗАЛІЗНИЦЯ""",Хуєпинальник
-Кузьма,Григоренко,Миколаївна,6789012345,234687456,GH123456,050-123-45-67,4some@some.so,4some.so,Ukraine,Kyiv,Площа Майдан Незалежності 111,"15, каб",ПАТ АРСЕЛОРМІТТАЛ КРИВИЙ РІГ,Професіонал

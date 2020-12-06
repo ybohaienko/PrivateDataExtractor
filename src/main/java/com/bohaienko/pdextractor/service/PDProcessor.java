@@ -7,7 +7,6 @@ import com.bohaienko.pdextractor.model.common.DocumentPersistenceData;
 import com.bohaienko.pdextractor.model.common.PrivateDataValue;
 import com.bohaienko.pdextractor.model.individual.CommonPd;
 import com.bohaienko.pdextractor.model.individual.Individual;
-import com.bohaienko.pdextractor.repository.ColumnsPersistenceDataRepository;
 import com.bohaienko.pdextractor.repository.DocumentPersistenceDataRepository;
 import com.bohaienko.pdextractor.repository.individual.CommonPdRepository;
 import com.bohaienko.pdextractor.repository.individual.IndividualRepository;
@@ -33,9 +32,6 @@ public class PDProcessor {
 	private DocumentPersistenceDataRepository docRepository;
 
 	@Autowired
-	private ColumnsPersistenceDataRepository columnRepository;
-
-	@Autowired
 	private RepoInitializer repoInitializer;
 
 	@Autowired
@@ -56,7 +52,7 @@ public class PDProcessor {
 				if (privateDataTypeList.containsAll(Arrays.asList(uniqueTypesSet))) {
 					Long individualId = checkUniqueSetExistsForIndividual(row, uniqueTypesSet);
 					if (individualId != null)
-						saveIndividualAttributes(individualRepository.findById(individualId).orElse(null), row);
+						saveIndividualAttributes(Objects.requireNonNull(individualRepository.findById(individualId).orElse(null)), row);
 					else
 						saveIndividualAttributes(individualRepository.save(new Individual(UUID.randomUUID())), row);
 				} else {
@@ -97,6 +93,7 @@ public class PDProcessor {
 					.filter(pdValue -> pdValue.getType().equals(pdType))
 					.collect(toList());
 			filteredPdValues.forEach(filteredPdValue -> {
+				@SuppressWarnings("unchecked")
 				List<? extends CommonPd> list = repos.get(filteredPdValue.getType())
 						.findByValue(filteredPdValue.getValue());
 				list.forEach(e -> {
@@ -128,28 +125,4 @@ public class PDProcessor {
 			result = true;
 		return result;
 	}
-
-
-	public List<List<PrivateDataValue>> createDummy() {
-		List<PrivateDataValue> dummy = new ArrayList<>();
-		dummy.add(new PrivateDataValue(PrivateDataType.TYPE_FIRST_NAME, "Ivan", "/root/some.file"));
-		dummy.add(new PrivateDataValue(PrivateDataType.TYPE_SECOND_NAME, "Rudenko", "/root/some.file"));
-		dummy.add(new PrivateDataValue(PrivateDataType.TYPE_FATHERS_NAME, "Ivanovych", "/root/some.file"));
-		dummy.add(new PrivateDataValue(PrivateDataType.TYPE_ID_TAX_NUMBER, "123456789", "/root/some.file"));
-		dummy.add(new PrivateDataValue(PrivateDataType.TYPE_PASSPORT_NUMBER, "MR123456", "/root/some.file"));
-		dummy.add(new PrivateDataValue(PrivateDataType.TYPE_EMAIL, "some@some.so", "/root/some.file"));
-		List<PrivateDataValue> dummy2 = new ArrayList<>();
-		dummy.add(new PrivateDataValue(PrivateDataType.TYPE_FIRST_NAME, "Petro", "/root/some2.file"));
-		dummy.add(new PrivateDataValue(PrivateDataType.TYPE_SECOND_NAME, "Melnyk", "/root/some2.file"));
-		dummy.add(new PrivateDataValue(PrivateDataType.TYPE_FATHERS_NAME, "Petrovych", "/root/some2.file"));
-		dummy.add(new PrivateDataValue(PrivateDataType.TYPE_ID_TAX_NUMBER, "987654321", "/root/some2.file"));
-		dummy.add(new PrivateDataValue(PrivateDataType.TYPE_PASSPORT_NUMBER, "ML123456", "/root/some2.file"));
-		dummy.add(new PrivateDataValue(PrivateDataType.TYPE_PHONE_NUMBER, "+380501234567", "/root/some2.file"));
-		dummy.add(new PrivateDataValue(PrivateDataType.TYPE_FATHERS_NAME, "Petrovych", "/root/some2.file"));
-		List<List<PrivateDataValue>> dummy3 = new ArrayList<>();
-		dummy3.add(dummy);
-		dummy3.add(dummy2);
-		return dummy3;
-	}
-
 }

@@ -45,15 +45,13 @@ public class CommonParser {
 						new HashMap<>()
 				)
 		));
-		data.forEach(row -> {
-			row.forEach((header, value) -> {
-				columnDataList.stream()
-						.filter(e -> e.getHeader().equals(header))
-						.findAny()
-						.orElseThrow(IllegalArgumentException::new)
-						.getColumnValues().add(value);
-			});
-		});
+		data.forEach(row -> row.forEach((header, value) -> {
+			columnDataList.stream()
+					.filter(e -> e.getHeader().equals(header))
+					.findAny()
+					.orElseThrow(IllegalArgumentException::new)
+					.getColumnValues().add(value);
+		}));
 		return new DocumentData(columnDataList, sourcePath);
 	}
 }

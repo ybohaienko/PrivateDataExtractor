@@ -37,9 +37,7 @@ class IndividualController {
 	Individual replace(@RequestBody Individual newIndividual, @PathVariable Long id) {
 
 		return repository.findById(id)
-				.map(individual -> {
-					return repository.save(individual);
-				})
+				.map(repository::save)
 				.orElseGet(() -> {
 					newIndividual.setId(id);
 					return repository.save(newIndividual);

@@ -20,6 +20,6 @@ class DdxController {
 
 	@DeleteMapping("/crawlDdx")
 	void delete() {
-		thread1.stop();
+		thread1.interrupt();
 	}
 }

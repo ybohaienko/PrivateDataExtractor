@@ -8,5 +8,6 @@ import java.util.List;
 
 @NoRepositoryBean
 public interface CommonPdRepository<T, U> extends JpaRepository<T, U> {
+	@SuppressWarnings("EmptyMethod")
 	List<? extends CommonPd> findByValue(String value);
 }

@@ -4,7 +4,7 @@ import com.bohaienko.pdextractor.model.Extension;
 
 import java.util.Arrays;
 
-public class WrongFileTypeException extends RuntimeException {
+class WrongFileTypeException extends RuntimeException {
 	private static String message(String actualExtension, Extension[] extensions) {
 		StringBuilder message = new StringBuilder("File type of extension: '")
 				.append(actualExtension)

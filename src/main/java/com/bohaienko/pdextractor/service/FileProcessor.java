@@ -50,7 +50,7 @@ public class FileProcessor {
 							.filter(column -> column.getColumnHeader().equals(key))
 							.findFirst().orElse(null);
 					parsedRow.add(new PrivateDataValue(
-							PrivateDataType.valueOf(targetColumn.getColumnRecognizedPiiType()),
+							PrivateDataType.valueOf(Objects.requireNonNull(targetColumn).getColumnRecognizedPiiType()),
 							value,
 							document.getDocumentPath() + document.getDocumentName())
 					);

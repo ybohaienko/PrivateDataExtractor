@@ -59,10 +59,13 @@ public class PDTypeProcessor {
 						getFileNameByFullPath(srcFullPath),
 						getLocationByFullPath(srcFullPath))
 		);
-		dataWithColumnTypesByValue.getColumnData().forEach(c -> {
-			colRepository.save(new ColumnsPersistenceData(c.getPositionNumber(), c.getHeader(), c.getExpectedColumnType().name(), doc));
-		});
-
+		dataWithColumnTypesByValue.getColumnData().forEach(c -> colRepository.save(
+				new ColumnsPersistenceData(
+						c.getPositionNumber(),
+						c.getHeader(),
+						c.getExpectedColumnType().name(),
+						doc
+				)));
 		return doc.getId();
 	}
 
@@ -86,18 +89,16 @@ public class PDTypeProcessor {
 		StringComparatorService comparator = new StringComparatorService();
 		Map<PrivateDataType, Integer> scoreSet = supplyScoreSet();
 		AtomicBoolean isMatch = new AtomicBoolean(false);
-		columnValues.forEach(value -> {
-			dict.forEach((privateDataType, dictValues) -> {
-				PrivateDataType type = PrivateDataType.valueOf(privateDataType);
-				dictValues.forEach(dictValue -> {
-					if (comparator.calculateScore(value, dictValue) < 1) {
-						Integer scoreValue = scoreSet.get(type);
-						scoreSet.put(type, scoreValue + 1);
-						isMatch.set(true);
-					}
-				});
+		columnValues.forEach(value -> dict.forEach((privateDataType, dictValues) -> {
+			PrivateDataType type = PrivateDataType.valueOf(privateDataType);
+			dictValues.forEach(dictValue -> {
+				if (comparator.calculateScore(value, dictValue) < 1) {
+					Integer scoreValue = scoreSet.get(type);
+					scoreSet.put(type, scoreValue + 1);
+					isMatch.set(true);
+				}
 			});
-		});
+		}));
 		if (isMatch.get())
 			return scoreSet;
 		else
@@ -109,17 +110,15 @@ public class PDTypeProcessor {
 				.getValuesInColumnsByFilePath("src/main/resources/recognition/regex.csv");
 		Map<PrivateDataType, Integer> scoreSet = supplyScoreSet();
 		AtomicBoolean isMatch = new AtomicBoolean(false);
-		columnValues.forEach(value -> {
-			regexData.forEach((privateDataType, regex) -> {
-				PrivateDataType type = PrivateDataType.valueOf(privateDataType);
-				regex.forEach(e -> {
-					if (value.matches(e)) {
-						scoreSet.put(type, scoreSet.get(type) + 1);
-						isMatch.set(true);
-					}
-				});
+		columnValues.forEach(value -> regexData.forEach((privateDataType, regex) -> {
+			PrivateDataType type = PrivateDataType.valueOf(privateDataType);
+			regex.forEach(e -> {
+				if (value.matches(e)) {
+					scoreSet.put(type, scoreSet.get(type) + 1);
+					isMatch.set(true);
+				}
 			});
-		});
+		}));
 		if (isMatch.get())
 			return scoreSet;
 		else
@@ -143,10 +142,7 @@ public class PDTypeProcessor {
 
 	private Map<PrivateDataType, Integer> supplyScoreSet() {
 		Map<PrivateDataType, Integer> scoreSet = new HashMap<>();
-		Arrays.asList(PrivateDataType.values()).forEach(e -> {
-			scoreSet.put(e, 0);
-		});
+		Arrays.asList(PrivateDataType.values()).forEach(e -> scoreSet.put(e, 0));
 		return scoreSet;
 	}
-
 }

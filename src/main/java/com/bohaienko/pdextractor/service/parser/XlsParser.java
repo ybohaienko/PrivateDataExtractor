@@ -6,15 +6,14 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.*;
 
 import static com.bohaienko.pdextractor.utils.Commons.checkFileTypeForExtensions;
 
-public class XlsParser extends CommonParser {
-	public List<Map<String, String>> getAllValuesByPathOfLines(String path, int lines) {
+class XlsParser extends CommonParser {
+	List<Map<String, String>> getAllValuesByPathOfLines(String path, int lines) {
 		checkFileTypeForExtensions(path, new Extension[]{Extension.XLS, Extension.XLSX});
 		List<Map<String, String>> data = new ArrayList<>();
 		Sheet sheet = getSheet(path);
@@ -37,7 +36,6 @@ public class XlsParser extends CommonParser {
 	}
 
 	private Sheet getSheet(String path) {
-		File file = new File(path);
 		Workbook workbook = getWorkbook(path);
 		return Objects.requireNonNull(workbook).getSheetAt(0);
 	}
