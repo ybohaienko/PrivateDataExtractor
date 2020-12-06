@@ -7,7 +7,7 @@ import com.bohaienko.pdextractor.model.common.DocumentPersistenceData;
 import com.bohaienko.pdextractor.repository.ColumnsPersistenceDataRepository;
 import com.bohaienko.pdextractor.repository.DocumentPersistenceDataRepository;
 import com.bohaienko.pdextractor.service.parser.CommonParser;
-import com.bohaienko.pdextractor.service.parser.CsvParser;
+import com.bohaienko.pdextractor.service.parser.CsvParserService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -85,7 +85,7 @@ public class PDTypeProcessor {
 	}
 
 	private Map<PrivateDataType, Integer> checkDictionaries(List<String> columnValues) {
-		Map<String, List<String>> dict = new CsvParser().getValuesInColumnsByFilePath("src/main/resources/recognition/dict.csv");
+		Map<String, List<String>> dict = new CsvParserService().getValuesInColumnsByFilePath("src/main/resources/recognition/dict.csv");
 		StringsComparator comparator = new StringsComparator();
 		Map<PrivateDataType, Integer> scoreSet = supplyScoreSet();
 		AtomicBoolean isMatch = new AtomicBoolean(false);
@@ -106,7 +106,7 @@ public class PDTypeProcessor {
 	}
 
 	private Map<PrivateDataType, Integer> checkRegex(List<String> columnValues) {
-		Map<String, List<String>> regexData = new CsvParser()
+		Map<String, List<String>> regexData = new CsvParserService()
 				.getValuesInColumnsByFilePath("src/main/resources/recognition/regex.csv");
 		Map<PrivateDataType, Integer> scoreSet = supplyScoreSet();
 		AtomicBoolean isMatch = new AtomicBoolean(false);

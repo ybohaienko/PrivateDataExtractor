@@ -39,9 +39,9 @@ public class CrawlingStarter {
 					fileProcessor.retrievePayloadFromFileByDocument(tempLocalFilePath, docId));
 
 			//noinspection ResultOfMethodCallIgnored
-			new File(tempLocalFilePath).delete();
+//			new File(tempLocalFilePath).delete();
 		});
 		//noinspection ResultOfMethodCallIgnored
-		tempDir.delete();
+//		tempDir.delete();
 	}
 }

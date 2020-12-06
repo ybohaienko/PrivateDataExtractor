@@ -24,7 +24,7 @@ public class CommonPd {
 	private DocumentPersistenceData srcDoc;
 
 	@ManyToOne(fetch = FetchType.EAGER, optional = false)
-	@JoinColumn(name = "individual_id", nullable = false)
+	@JoinColumn(name = "individual_id", nullable = true)
 	private Individual individual;
 
 	public CommonPd(String value, DocumentPersistenceData srcDoc, Individual individual) {

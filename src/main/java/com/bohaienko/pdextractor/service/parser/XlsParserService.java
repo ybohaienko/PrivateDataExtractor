@@ -14,7 +14,7 @@ import java.util.*;
 import static com.bohaienko.pdextractor.utils.Commons.checkFileTypeForExtensions;
 
 @Log4j2
-class XlsParser extends CommonParser {
+class XlsParserService extends CommonParser {
 	List<Map<String, String>> getAllValuesByPathOfLines(String path, int lines) {
 		checkFileTypeForExtensions(path, new Extension[]{Extension.XLS, Extension.XLSX});
 		List<Map<String, String>> data = new ArrayList<>();

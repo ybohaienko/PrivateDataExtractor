@@ -29,9 +29,9 @@ public class CommonParser {
 		List<Map<String, String>> rawData = null;
 		String extension = FilenameUtils.getExtension(tempLocalFilePath);
 		if (extension.equals(CSV.name().toLowerCase()))
-			rawData = new CsvParser().getAllValuesByPathOfLines(tempLocalFilePath, lines);
+			rawData = new CsvParserService().getAllValuesByPathOfLines(tempLocalFilePath, lines);
 		if (extension.equals(XLS.name().toLowerCase()) || extension.equals(XLSX.name()))
-			rawData = new XlsParser().getAllValuesByPathOfLines(tempLocalFilePath, lines);
+			rawData = new XlsParserService().getAllValuesByPathOfLines(tempLocalFilePath, lines);
 		return rawData;
 	}
 

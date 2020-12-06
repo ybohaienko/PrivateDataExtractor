@@ -56,7 +56,7 @@ public class PDProcessor {
 					else
 						saveIndividualAttributes(individualRepository.save(new Individual(UUID.randomUUID())), row);
 				} else {
-					saveIndividualAttributes(individualRepository.save(new Individual(UUID.randomUUID())), row);
+					saveIndividualAttributes(null,row);
 				}
 			});
 		});

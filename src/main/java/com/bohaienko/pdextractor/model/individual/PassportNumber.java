@@ -25,7 +25,6 @@ public class PassportNumber extends CommonPd {
 	@JoinColumn(name = "document_id", nullable = false)
 	private DocumentPersistenceData srcDoc;
 
-	@NotNull
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "individual_id", nullable = false)
 	private Individual individual;
