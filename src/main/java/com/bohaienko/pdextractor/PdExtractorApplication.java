@@ -2,10 +2,10 @@ package com.bohaienko.pdextractor;
 
 import com.bohaienko.pdextractor.repository.DocumentPersistenceDataRepository;
 import com.bohaienko.pdextractor.repository.individual.*;
-import com.bohaienko.pdextractor.service.client.DdxClient;
 import com.bohaienko.pdextractor.service.FileProcessor;
 import com.bohaienko.pdextractor.service.PDProcessor;
 import com.bohaienko.pdextractor.service.PDTypeProcessor;
+import com.bohaienko.pdextractor.service.client.DdxClient;
 import com.dropbox.core.v2.files.FileMetadata;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -50,19 +50,21 @@ public class PdExtractorApplication {
 
 	@EventListener(ApplicationReadyEvent.class)
 	public void some() {
-		File f = new File("temp");
-		f.mkdir();
+		File tempDir = new File("temp");
+		tempDir.mkdir();
 		ddxService.getDdxFilePaths().forEach(filePath -> {
-			FileMetadata metadata = ddxService.downloadDdxFiles(filePath, f.getPath() + File.separator);
+			FileMetadata metadata = ddxService.downloadDdxFiles(filePath, tempDir.getPath() + File.separator);
 
-			String tempLocalFilePath = f.getPath() + File.separator + metadata.getName();
+			String tempLocalFilePath = tempDir.getPath() + File.separator + metadata.getName();
 			int pdTypeProcessorFileLines = 10;
 			Long docId = pdTypeProcessor.processColumnsType(tempLocalFilePath, pdTypeProcessorFileLines, metadata.getPathLower());
 
 			pdProcessor.process(
 					fileProcessor.retrievePayloadFromFileByDocument(tempLocalFilePath, docId));
+
+//			new File(tempLocalFilePath).delete();
 		});
-		f.delete();
+//		tempDir.delete();
 
 //		pdTypeProcessor.processColumnType("temp/" + "rec_test.csv", 0, "somePath");
 

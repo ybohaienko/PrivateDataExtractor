@@ -33,7 +33,7 @@ public class FileProcessor {
 	public List<List<PrivateDataValue>> retrievePayloadFromFileByDocument(String tempLocalFilePath, Long docId) {
 		List<List<PrivateDataValue>> payload = new ArrayList<>();
 		try {
-			DocumentPersistenceData document = docRepository.findById(docId).orElse(null);
+			DocumentPersistenceData document = Objects.requireNonNull(docRepository.findById(docId).orElse(null));
 			List<ColumnsPersistenceData> columns = colRepository.findByDocumentId(docId);
 			List<Map<String, String>> data = commonParser.getRawData(
 					tempLocalFilePath,
@@ -52,7 +52,7 @@ public class FileProcessor {
 					parsedRow.add(new PrivateDataValue(
 							PrivateDataType.valueOf(targetColumn.getColumnRecognizedPiiType()),
 							value,
-							Objects.requireNonNull(document).getDocumentPath())
+							document.getDocumentPath() + document.getDocumentName())
 					);
 				});
 				payload.add(parsedRow);

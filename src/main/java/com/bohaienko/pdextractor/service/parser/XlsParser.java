@@ -13,7 +13,7 @@ import java.util.*;
 
 import static com.bohaienko.pdextractor.utils.Commons.checkFileTypeForExtensions;
 
-public class XlsParser extends CommonParser{
+public class XlsParser extends CommonParser {
 	public List<Map<String, String>> getAllValuesByPathOfLines(String path, int lines) {
 		checkFileTypeForExtensions(path, new Extension[]{Extension.XLS, Extension.XLSX});
 		List<Map<String, String>> data = new ArrayList<>();
@@ -60,7 +60,6 @@ public class XlsParser extends CommonParser{
 				.formatCellValue(sheet.getRow(row).getCell(cell))
 				.trim();
 	}
-
 
 
 	private static boolean isRowEmpty(Row row) {

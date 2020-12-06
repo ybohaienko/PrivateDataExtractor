@@ -14,11 +14,11 @@ public class Commons {
 			throw new WrongFileTypeException(fileExtension, extensions);
 	}
 
-	public static String getFileNameByLocation(String location) {
-		return FilenameUtils.getName(location);
+	public static String getFileNameByFullPath(String fullPath) {
+		return FilenameUtils.getName(fullPath);
 	}
 
-	public static String getPathByFullLocation(String location) {
-		return FilenameUtils.getFullPath(location);
+	public static String getLocationByFullPath(String fullPath) {
+		return FilenameUtils.getFullPath(fullPath);
 	}
 }

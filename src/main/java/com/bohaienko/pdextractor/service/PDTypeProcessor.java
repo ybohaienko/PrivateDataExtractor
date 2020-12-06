@@ -15,7 +15,8 @@ import org.springframework.stereotype.Component;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import static com.bohaienko.pdextractor.utils.Commons.getFileNameByLocation;
+import static com.bohaienko.pdextractor.utils.Commons.getFileNameByFullPath;
+import static com.bohaienko.pdextractor.utils.Commons.getLocationByFullPath;
 
 @Log4j2
 @Component
@@ -29,8 +30,8 @@ public class PDTypeProcessor {
 	@Autowired
 	ColumnsPersistenceDataRepository colRepository;
 
-	public Long processColumnsType(String tempFilePath, int lines, String initialSourcePath) {
-		DocumentData data = commonParser.getDocumentData(tempFilePath, lines, initialSourcePath);
+	public Long processColumnsType(String tempFilePath, int lines, String srcFullPath) {
+		DocumentData data = commonParser.getDocumentData(tempFilePath, lines, srcFullPath);
 		DocumentData dataWithColumnTypes = getColumnSpecsByHeaders(data);
 		DocumentData dataWithColumnTypesByValue = getColumnSpecByColumnValues(dataWithColumnTypes);
 
@@ -53,7 +54,11 @@ public class PDTypeProcessor {
 			}
 		});
 
-		DocumentPersistenceData doc = docRepository.save(new DocumentPersistenceData(getFileNameByLocation(tempFilePath), initialSourcePath));
+		DocumentPersistenceData doc = docRepository.save(
+				new DocumentPersistenceData(
+						getFileNameByFullPath(srcFullPath),
+						getLocationByFullPath(srcFullPath))
+		);
 		dataWithColumnTypesByValue.getColumnData().forEach(c -> {
 			colRepository.save(new ColumnsPersistenceData(c.getPositionNumber(), c.getHeader(), c.getExpectedColumnType().name(), doc));
 		});

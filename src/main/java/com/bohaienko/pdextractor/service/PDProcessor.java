@@ -18,8 +18,8 @@ import org.springframework.stereotype.Component;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 
-import static com.bohaienko.pdextractor.utils.Commons.getFileNameByLocation;
-import static com.bohaienko.pdextractor.utils.Commons.getPathByFullLocation;
+import static com.bohaienko.pdextractor.utils.Commons.getFileNameByFullPath;
+import static com.bohaienko.pdextractor.utils.Commons.getLocationByFullPath;
 import static java.util.stream.Collectors.toList;
 
 @Log4j2
@@ -51,7 +51,6 @@ public class PDProcessor {
 		payload.forEach(row -> {
 			List<PrivateDataType> privateDataTypeList = new ArrayList<>();
 			row.forEach(e -> privateDataTypeList.add(e.getType()));
-			Individual newIndividual = new Individual(UUID.randomUUID());
 
 			Arrays.asList(PrivateDataType.getUnique()).forEach(uniqueTypesSet -> {
 				if (privateDataTypeList.containsAll(Arrays.asList(uniqueTypesSet))) {
@@ -59,9 +58,9 @@ public class PDProcessor {
 					if (individualId != null)
 						saveIndividualAttributes(individualRepository.findById(individualId).orElse(null), row);
 					else
-						saveIndividualAttributes(newIndividual, row);
+						saveIndividualAttributes(individualRepository.save(new Individual(UUID.randomUUID())), row);
 				} else {
-					saveIndividualAttributes(newIndividual, row);
+					saveIndividualAttributes(individualRepository.save(new Individual(UUID.randomUUID())), row);
 				}
 			});
 		});
@@ -73,15 +72,18 @@ public class PDProcessor {
 			String srcDocPath = value.getFullPath();
 			DocumentPersistenceData doc = retrieveSavedDocumentByPath(srcDocPath);
 			if (doc == null)
-				doc = new DocumentPersistenceData(getFileNameByLocation(srcDocPath), getPathByFullLocation(srcDocPath));
+				doc = new DocumentPersistenceData(
+						getFileNameByFullPath(srcDocPath),
+						getLocationByFullPath(srcDocPath)
+				);
 			genericInstanceCreator.saveGeneric(value.getType(), value.getValue(), doc, individual);
 		});
 	}
 
 	private DocumentPersistenceData retrieveSavedDocumentByPath(String fullPath) {
 		return docRepository.findByDocumentNameAndDocumentPath(
-				getFileNameByLocation(fullPath),
-				getPathByFullLocation(fullPath)
+				getFileNameByFullPath(fullPath),
+				getLocationByFullPath(fullPath)
 		).stream().findFirst().orElse(null);
 	}
 

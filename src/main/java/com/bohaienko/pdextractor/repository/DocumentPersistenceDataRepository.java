@@ -8,5 +8,6 @@ import java.util.Optional;
 
 public interface DocumentPersistenceDataRepository extends JpaRepository<DocumentPersistenceData, Long> {
 	List<DocumentPersistenceData> findByDocumentNameAndDocumentPath(String documentName, String documentPath);
+
 	Optional<DocumentPersistenceData> findById(Long id);
 }

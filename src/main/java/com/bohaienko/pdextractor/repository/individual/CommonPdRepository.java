@@ -1,7 +1,6 @@
 package com.bohaienko.pdextractor.repository.individual;
 
 import com.bohaienko.pdextractor.model.individual.CommonPd;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.NoRepositoryBean;
 
