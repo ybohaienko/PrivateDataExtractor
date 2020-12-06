@@ -1,11 +1,11 @@
 package com.bohaienko.pdextractor.service;
 
 import com.bohaienko.pdextractor.model.PrivateDataType;
-import com.bohaienko.pdextractor.model.ColumnsPersistenceData;
-import com.bohaienko.pdextractor.model.DocumentPersistenceData;
+import com.bohaienko.pdextractor.model.SourceColumn;
+import com.bohaienko.pdextractor.model.SourceDocument;
 import com.bohaienko.pdextractor.model.occasional.PrivateDataValue;
-import com.bohaienko.pdextractor.repository.ColumnsPersistenceDataRepository;
-import com.bohaienko.pdextractor.repository.DocumentPersistenceDataRepository;
+import com.bohaienko.pdextractor.repository.SourceColumnRepository;
+import com.bohaienko.pdextractor.repository.SourceDocumentRepository;
 import com.bohaienko.pdextractor.service.parser.CommonParser;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,16 +25,16 @@ public class FileProcessor {
 	CommonParser commonParser;
 
 	@Autowired
-	DocumentPersistenceDataRepository docRepository;
+	SourceDocumentRepository docRepository;
 
 	@Autowired
-	ColumnsPersistenceDataRepository colRepository;
+	SourceColumnRepository colRepository;
 
 	public List<List<PrivateDataValue>> retrievePayloadFromFileByDocument(String tempLocalFilePath, Long docId) {
 		List<List<PrivateDataValue>> payload = new ArrayList<>();
 		try {
-			DocumentPersistenceData documentPersistenceData = Objects.requireNonNull(docRepository.findById(docId).orElse(null));
-			List<ColumnsPersistenceData> columns = colRepository.findByDocumentId(docId);
+			SourceDocument sourceDocument = Objects.requireNonNull(docRepository.findById(docId).orElse(null));
+			List<SourceColumn> columns = colRepository.findByDocumentId(docId);
 			List<Map<String, String>> data = commonParser.getRawData(
 					tempLocalFilePath,
 					0
@@ -42,17 +42,17 @@ public class FileProcessor {
 
 			AtomicInteger counter = new AtomicInteger();
 			data.forEach(row -> {
-				log.info("Processing {}th row of the document: {}", counter.getAndIncrement(), documentPersistenceData.getDocumentName());
+				log.info("Processing {}th row of the document: {}", counter.getAndIncrement(), sourceDocument.getDocumentName());
 
 				List<PrivateDataValue> parsedRow = new ArrayList<>();
 				row.forEach((key, value) -> {
-					ColumnsPersistenceData targetColumn = columns.stream()
+					SourceColumn targetColumn = columns.stream()
 							.filter(column -> column.getColumnHeader().equals(key))
 							.findFirst().orElse(null);
 					parsedRow.add(new PrivateDataValue(
 							PrivateDataType.valueOf(Objects.requireNonNull(targetColumn).getColumnRecognizedPiiType()),
 							value,
-							documentPersistenceData.getDocumentPath() + documentPersistenceData.getDocumentName())
+							sourceDocument.getDocumentPath() + sourceDocument.getDocumentName())
 					);
 				});
 				payload.add(parsedRow);

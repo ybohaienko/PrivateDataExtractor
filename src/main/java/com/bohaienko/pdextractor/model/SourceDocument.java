@@ -17,7 +17,7 @@ import javax.persistence.Id;
 @NoArgsConstructor
 @ToString
 @EqualsAndHashCode
-public class DocumentPersistenceData {
+public class SourceDocument {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -26,7 +26,7 @@ public class DocumentPersistenceData {
 	@NotNull
 	String documentPath;
 
-	public DocumentPersistenceData(String documentName, String documentPath) {
+	public SourceDocument(String documentName, String documentPath) {
 		this.documentName = documentName;
 		this.documentPath = documentPath;
 	}

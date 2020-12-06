@@ -3,11 +3,11 @@ package com.bohaienko.pdextractor.service;
 import com.bohaienko.pdextractor.config.GenericInstanceCreator;
 import com.bohaienko.pdextractor.config.RepoInitializer;
 import com.bohaienko.pdextractor.model.PrivateDataType;
-import com.bohaienko.pdextractor.model.DocumentPersistenceData;
+import com.bohaienko.pdextractor.model.SourceDocument;
 import com.bohaienko.pdextractor.model.occasional.PrivateDataValue;
 import com.bohaienko.pdextractor.model.pdTypeValues.CommonPd;
 import com.bohaienko.pdextractor.model.Individual;
-import com.bohaienko.pdextractor.repository.DocumentPersistenceDataRepository;
+import com.bohaienko.pdextractor.repository.SourceDocumentRepository;
 import com.bohaienko.pdextractor.repository.pdTypeValues.CommonPdRepository;
 import com.bohaienko.pdextractor.repository.IndividualRepository;
 import lombok.extern.log4j.Log4j2;
@@ -29,7 +29,7 @@ public class PDProcessor {
 	private IndividualRepository individualRepository;
 
 	@Autowired
-	private DocumentPersistenceDataRepository docRepository;
+	private SourceDocumentRepository docRepository;
 
 	@Autowired
 	private RepoInitializer repoInitializer;
@@ -65,7 +65,7 @@ public class PDProcessor {
 	private void saveAttributes(Individual individual, List<PrivateDataValue> privateDataValues) {
 		log.info("Saving private data values for the individual with UUID: {}", individual.getUuid());
 		privateDataValues.forEach(value -> {
-			DocumentPersistenceData doc = getDocument(value);
+			SourceDocument doc = getDocument(value);
 			genericInstanceCreator.saveGeneric(value.getType(), value.getValue(), doc, individual);
 		});
 	}
@@ -73,16 +73,16 @@ public class PDProcessor {
 	private void saveAttributes(List<PrivateDataValue> privateDataValues) {
 		log.info("Saving private data values without an individual");
 		privateDataValues.forEach(value -> {
-			DocumentPersistenceData doc = getDocument(value);
+			SourceDocument doc = getDocument(value);
 			genericInstanceCreator.saveGeneric(value.getType(), value.getValue(), doc, null);
 		});
 	}
 
-	private DocumentPersistenceData getDocument(PrivateDataValue value) {
+	private SourceDocument getDocument(PrivateDataValue value) {
 		String srcDocPath = value.getFullPath();
-		DocumentPersistenceData doc = retrieveSavedDocumentByPath(srcDocPath);
+		SourceDocument doc = retrieveSavedDocumentByPath(srcDocPath);
 		if (doc == null)
-			return new DocumentPersistenceData(
+			return new SourceDocument(
 					getFileNameByFullPath(srcDocPath),
 					getLocationByFullPath(srcDocPath)
 			);
@@ -90,7 +90,7 @@ public class PDProcessor {
 	}
 
 
-	private DocumentPersistenceData retrieveSavedDocumentByPath(String fullPath) {
+	private SourceDocument retrieveSavedDocumentByPath(String fullPath) {
 		return docRepository.findByDocumentNameAndDocumentPath(
 				getFileNameByFullPath(fullPath),
 				getLocationByFullPath(fullPath)

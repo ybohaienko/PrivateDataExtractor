@@ -2,7 +2,7 @@ package com.bohaienko.pdextractor.config;
 
 import com.bohaienko.pdextractor.model.Individual;
 import com.bohaienko.pdextractor.model.PrivateDataType;
-import com.bohaienko.pdextractor.model.DocumentPersistenceData;
+import com.bohaienko.pdextractor.model.SourceDocument;
 import com.bohaienko.pdextractor.model.pdTypeValues.*;
 import com.bohaienko.pdextractor.repository.pdTypeValues.CommonPdRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +16,7 @@ public class GenericInstanceCreator {
 	@Autowired
 	private RepoInitializer repoInitializer;
 
-	public void saveGeneric(PrivateDataType pdType, String value, DocumentPersistenceData doc, Individual individual) {
+	public void saveGeneric(PrivateDataType pdType, String value, SourceDocument doc, Individual individual) {
 		Map<PrivateDataType, CommonPdRepository> repos = repoInitializer.getRepositories();
 		try {
 			switch (pdType) {

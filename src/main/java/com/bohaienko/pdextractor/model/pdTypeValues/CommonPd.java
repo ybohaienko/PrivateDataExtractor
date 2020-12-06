@@ -1,7 +1,7 @@
 package com.bohaienko.pdextractor.model.pdTypeValues;
 
 import com.bohaienko.pdextractor.model.Individual;
-import com.bohaienko.pdextractor.model.DocumentPersistenceData;
+import com.bohaienko.pdextractor.model.SourceDocument;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -23,15 +23,15 @@ public class CommonPd {
 
 	@ManyToOne(fetch = FetchType.EAGER, optional = false)
 	@JoinColumn(name = "document_id", nullable = false,insertable = false,updatable = false)
-	private DocumentPersistenceData documentPersistenceData;
+	private SourceDocument sourceDocument;
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "individual_id")
 	private Individual individual;
 
-	public CommonPd(String value, DocumentPersistenceData documentPersistenceData, Individual individual) {
+	public CommonPd(String value, SourceDocument sourceDocument, Individual individual) {
 		this.value = value;
-		this.documentPersistenceData = documentPersistenceData;
+		this.sourceDocument = sourceDocument;
 		this.individual = individual;
 	}
 }

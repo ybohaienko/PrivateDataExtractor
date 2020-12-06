@@ -12,7 +12,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @ToString
 @EqualsAndHashCode
-public class ColumnsPersistenceData {
+public class SourceColumn {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -26,9 +26,9 @@ public class ColumnsPersistenceData {
 
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "document_id", nullable = false)
-	private DocumentPersistenceData document;
+	private SourceDocument document;
 
-	public ColumnsPersistenceData(int columnPositionNumber, String columnHeader, String columnRecognizedPiiType, DocumentPersistenceData document) {
+	public SourceColumn(int columnPositionNumber, String columnHeader, String columnRecognizedPiiType, SourceDocument document) {
 		this.columnPositionNumber = columnPositionNumber;
 		this.columnHeader = columnHeader;
 		this.columnRecognizedPiiType = columnRecognizedPiiType;
