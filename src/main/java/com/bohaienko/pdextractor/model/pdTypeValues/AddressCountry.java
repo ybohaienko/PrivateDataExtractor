@@ -9,8 +9,8 @@ import javax.persistence.*;
 @Entity
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class AddressCountry extends CommonPd {
-	public AddressCountry(String value, SourceDocument srcDoc, Individual individual) {
-		super(value, srcDoc, individual);
+public class AddressCountry extends BasePdTypeValue {
+	public AddressCountry(String value, SourceDocument document, Individual individual) {
+		super(value, document, individual);
 	}
 }

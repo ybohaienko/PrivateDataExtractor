@@ -8,9 +8,11 @@ import org.springframework.stereotype.Service;
 
 import java.io.File;
 
+import static com.bohaienko.pdextractor.utils.Commons.timestamp;
+
 @Log4j2
 @Service
-public class CrawlingStarter {
+public class CrawlingHandler {
 
 	@Autowired
 	DropBoxClient ddxService;
@@ -26,6 +28,7 @@ public class CrawlingStarter {
 
 	public void crawlDropbox(String accessToken) {
 		File tempDir = new File("temp");
+		log.info("Created temporary directory: {}", tempDir.getPath());
 		//noinspection ResultOfMethodCallIgnored
 		tempDir.mkdir();
 		ddxService.enableDpxDiscoveryForToken(accessToken).forEach(filePath -> {
@@ -37,11 +40,12 @@ public class CrawlingStarter {
 
 			pdProcessor.process(
 					fileProcessor.retrievePayloadFromFileByDocument(tempLocalFilePath, docId));
-
+			log.info("FINISHED DropBox crawling process at: {}", timestamp());
 			//noinspection ResultOfMethodCallIgnored
-//			new File(tempLocalFilePath).delete();
+			new File(tempLocalFilePath).delete();
 		});
 		//noinspection ResultOfMethodCallIgnored
-//		tempDir.delete();
+		tempDir.delete();
+		log.info("Cleanup process executed");
 	}
 }

@@ -9,8 +9,8 @@ import javax.persistence.*;
 @Entity
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class FirstName extends CommonPd {
-	public FirstName(String value, SourceDocument srcDoc, Individual individual) {
-		super(value, srcDoc, individual);
+public class FirstName extends BasePdTypeValue {
+	public FirstName(String value, SourceDocument document, Individual individual) {
+		super(value, document, individual);
 	}
 }

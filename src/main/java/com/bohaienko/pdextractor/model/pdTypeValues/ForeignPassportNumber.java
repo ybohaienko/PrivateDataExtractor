@@ -9,8 +9,8 @@ import javax.persistence.*;
 @Entity
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class ForeignPassportNumber extends CommonPd {
-	public ForeignPassportNumber(String value, SourceDocument srcDoc, Individual individual) {
-		super(value, srcDoc, individual);
+public class ForeignPassportNumber extends BasePdTypeValue {
+	public ForeignPassportNumber(String value, SourceDocument document, Individual individual) {
+		super(value, document, individual);
 	}
 }

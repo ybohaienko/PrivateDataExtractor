@@ -22,13 +22,13 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class FileProcessor {
 
 	@Autowired
-	CommonParser commonParser;
+	private CommonParser commonParser;
 
 	@Autowired
-	SourceDocumentRepository docRepository;
+	private SourceDocumentRepository docRepository;
 
 	@Autowired
-	SourceColumnRepository colRepository;
+	private SourceColumnRepository colRepository;
 
 	public List<List<PrivateDataValue>> retrievePayloadFromFileByDocument(String tempLocalFilePath, Long docId) {
 		List<List<PrivateDataValue>> payload = new ArrayList<>();
@@ -42,15 +42,15 @@ public class FileProcessor {
 
 			AtomicInteger counter = new AtomicInteger();
 			data.forEach(row -> {
-				log.info("Processing {}th row of the document: {}", counter.getAndIncrement(), sourceDocument.getDocumentName());
+				log.debug("Processing {}th row of the document: {}", counter.getAndIncrement(), sourceDocument.getDocumentName());
 
 				List<PrivateDataValue> parsedRow = new ArrayList<>();
 				row.forEach((key, value) -> {
 					SourceColumn targetColumn = columns.stream()
-							.filter(column -> column.getColumnHeader().equals(key))
+							.filter(column -> column.getColHeader().equals(key))
 							.findFirst().orElse(null);
 					parsedRow.add(new PrivateDataValue(
-							PrivateDataType.valueOf(Objects.requireNonNull(targetColumn).getColumnRecognizedPiiType()),
+							PrivateDataType.valueOf(Objects.requireNonNull(targetColumn).getColPdType()),
 							value,
 							sourceDocument.getDocumentPath() + sourceDocument.getDocumentName())
 					);

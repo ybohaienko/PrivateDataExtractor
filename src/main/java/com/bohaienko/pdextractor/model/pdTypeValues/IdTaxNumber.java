@@ -9,8 +9,8 @@ import javax.persistence.*;
 @Entity
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class IdTaxNumber extends CommonPd {
-	public IdTaxNumber(String value, SourceDocument srcDoc, Individual individual) {
-		super(value, srcDoc, individual);
+public class IdTaxNumber extends BasePdTypeValue {
+	public IdTaxNumber(String value, SourceDocument document, Individual individual) {
+		super(value, document, individual);
 	}
 }

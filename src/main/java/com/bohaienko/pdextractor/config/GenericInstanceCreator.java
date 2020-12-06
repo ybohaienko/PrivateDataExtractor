@@ -4,7 +4,7 @@ import com.bohaienko.pdextractor.model.Individual;
 import com.bohaienko.pdextractor.model.PrivateDataType;
 import com.bohaienko.pdextractor.model.SourceDocument;
 import com.bohaienko.pdextractor.model.pdTypeValues.*;
-import com.bohaienko.pdextractor.repository.pdTypeValues.CommonPdRepository;
+import com.bohaienko.pdextractor.repository.pdTypeValues.BasePdTypeValueRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -17,7 +17,7 @@ public class GenericInstanceCreator {
 	private RepoInitializer repoInitializer;
 
 	public void saveGeneric(PrivateDataType pdType, String value, SourceDocument doc, Individual individual) {
-		Map<PrivateDataType, CommonPdRepository> repos = repoInitializer.getRepositories();
+		Map<PrivateDataType, BasePdTypeValueRepository> repos = repoInitializer.getRepositories();
 		try {
 			switch (pdType) {
 				case TYPE_FIRST_NAME:

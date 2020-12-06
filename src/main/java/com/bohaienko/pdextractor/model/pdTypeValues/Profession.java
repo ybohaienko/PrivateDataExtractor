@@ -9,8 +9,8 @@ import javax.persistence.*;
 @Entity
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class Profession extends CommonPd {
-	public Profession(String value, SourceDocument srcDoc, Individual individual) {
-		super(value, srcDoc, individual);
+public class Profession extends BasePdTypeValue {
+	public Profession(String value, SourceDocument document, Individual individual) {
+		super(value, document, individual);
 	}
 }

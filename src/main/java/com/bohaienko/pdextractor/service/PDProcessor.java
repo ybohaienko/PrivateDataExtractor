@@ -2,14 +2,13 @@ package com.bohaienko.pdextractor.service;
 
 import com.bohaienko.pdextractor.config.GenericInstanceCreator;
 import com.bohaienko.pdextractor.config.RepoInitializer;
+import com.bohaienko.pdextractor.model.Individual;
 import com.bohaienko.pdextractor.model.PrivateDataType;
 import com.bohaienko.pdextractor.model.SourceDocument;
 import com.bohaienko.pdextractor.model.occasional.PrivateDataValue;
-import com.bohaienko.pdextractor.model.pdTypeValues.CommonPd;
-import com.bohaienko.pdextractor.model.Individual;
-import com.bohaienko.pdextractor.repository.SourceDocumentRepository;
-import com.bohaienko.pdextractor.repository.pdTypeValues.CommonPdRepository;
+import com.bohaienko.pdextractor.model.pdTypeValues.BasePdTypeValue;
 import com.bohaienko.pdextractor.repository.IndividualRepository;
+import com.bohaienko.pdextractor.repository.pdTypeValues.BasePdTypeValueRepository;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -17,8 +16,6 @@ import org.springframework.stereotype.Component;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 
-import static com.bohaienko.pdextractor.utils.Commons.getFileNameByFullPath;
-import static com.bohaienko.pdextractor.utils.Commons.getLocationByFullPath;
 import static java.util.stream.Collectors.toList;
 
 @Log4j2
@@ -29,19 +26,20 @@ public class PDProcessor {
 	private IndividualRepository individualRepository;
 
 	@Autowired
-	private SourceDocumentRepository docRepository;
+	private RepoInitializer repoInitializer;
 
 	@Autowired
-	private RepoInitializer repoInitializer;
+	private PDTypeProcessor pdTypeProcessor;
 
 	@Autowired
 	private GenericInstanceCreator genericInstanceCreator;
 
 	private Map<Long, Map<PrivateDataType, Integer>> occurrences;
-	private Map<PrivateDataType, CommonPdRepository> repos;
+	private Map<PrivateDataType, BasePdTypeValueRepository> repos;
 
+	void process(List<List<PrivateDataValue>> payload) {
+		log.info("Processing exctracted payload from found file");
 
-	public void process(List<List<PrivateDataValue>> payload) {
 		repos = repoInitializer.getRepositories();
 
 		payload.forEach(row -> {
@@ -55,51 +53,31 @@ public class PDProcessor {
 						saveAttributes(Objects.requireNonNull(individualRepository.findById(individualId).orElse(null)), row);
 					else
 						saveAttributes(individualRepository.save(new Individual(UUID.randomUUID())), row);
-				} else {
+				} else
 					saveAttributes(row);
-				}
 			});
 		});
 	}
 
 	private void saveAttributes(Individual individual, List<PrivateDataValue> privateDataValues) {
-		log.info("Saving private data values for the individual with UUID: {}", individual.getUuid());
+		log.debug("Saving private data values for the individual with UUID: {}", individual.getUuid());
 		privateDataValues.forEach(value -> {
-			SourceDocument doc = getDocument(value);
+			SourceDocument doc = pdTypeProcessor.saveDocumentByPath(value.getFullPath());
 			genericInstanceCreator.saveGeneric(value.getType(), value.getValue(), doc, individual);
 		});
 	}
 
 	private void saveAttributes(List<PrivateDataValue> privateDataValues) {
-		log.info("Saving private data values without an individual");
+		log.debug("Saving private data values without an individual");
 		privateDataValues.forEach(value -> {
-			SourceDocument doc = getDocument(value);
+			SourceDocument doc = pdTypeProcessor.saveDocumentByPath(value.getFullPath());
 			genericInstanceCreator.saveGeneric(value.getType(), value.getValue(), doc, null);
 		});
 	}
 
-	private SourceDocument getDocument(PrivateDataValue value) {
-		String srcDocPath = value.getFullPath();
-		SourceDocument doc = retrieveSavedDocumentByPath(srcDocPath);
-		if (doc == null)
-			return new SourceDocument(
-					getFileNameByFullPath(srcDocPath),
-					getLocationByFullPath(srcDocPath)
-			);
-		return doc;
-	}
-
-
-	private SourceDocument retrieveSavedDocumentByPath(String fullPath) {
-		return docRepository.findByDocumentNameAndDocumentPath(
-				getFileNameByFullPath(fullPath),
-				getLocationByFullPath(fullPath)
-		).stream().findFirst().orElse(null);
-	}
-
 	private Long checkUniqueSetExistsForIndividual(List<PrivateDataValue> pdValues, PrivateDataType[] uniqueTypesSet) {
 		AtomicReference<Long> individualId = new AtomicReference<>();
-		log.info("Checking existence of found PD values for the unique set of values: {}", Arrays.asList(uniqueTypesSet));
+		log.debug("Checking existence of found PD values for the unique set of values: {}", Arrays.asList(uniqueTypesSet));
 
 		occurrences = new HashMap<>();
 		Arrays.asList(uniqueTypesSet).forEach(pdType -> {
@@ -108,7 +86,7 @@ public class PDProcessor {
 					.collect(toList());
 			filteredPdValues.forEach(filteredPdValue -> {
 				@SuppressWarnings("unchecked")
-				List<? extends CommonPd> list = repos.get(filteredPdValue.getType())
+				List<? extends BasePdTypeValue> list = repos.get(filteredPdValue.getType())
 						.findByValue(filteredPdValue.getValue());
 				list.forEach(e -> {
 					Long foundId = e.getIndividual().getId();

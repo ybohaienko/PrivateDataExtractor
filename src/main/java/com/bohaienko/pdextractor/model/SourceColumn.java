@@ -6,6 +6,12 @@ import lombok.*;
 import javax.persistence.*;
 
 @Entity
+@Table(uniqueConstraints = @UniqueConstraint(
+		columnNames = {
+				"colPosNum",
+				"colHeader",
+				"colPdType"
+		}))
 @Getter
 @Setter
 @AllArgsConstructor
@@ -17,21 +23,23 @@ public class SourceColumn {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	/* column position number */
 	@NotNull
-	int columnPositionNumber;
+	int colPosNum;
 	@NotNull
-	String columnHeader;
+	String colHeader;
+	/* column expected private data type */
 	@NotNull
-	String columnRecognizedPiiType;
+	String colPdType;
 
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "document_id", nullable = false)
 	private SourceDocument document;
 
-	public SourceColumn(int columnPositionNumber, String columnHeader, String columnRecognizedPiiType, SourceDocument document) {
-		this.columnPositionNumber = columnPositionNumber;
-		this.columnHeader = columnHeader;
-		this.columnRecognizedPiiType = columnRecognizedPiiType;
+	public SourceColumn(int colPosNum, String colHeader, String colPdType, SourceDocument document) {
+		this.colPosNum = colPosNum;
+		this.colHeader = colHeader;
+		this.colPdType = colPdType;
 		this.document = document;
 	}
 }

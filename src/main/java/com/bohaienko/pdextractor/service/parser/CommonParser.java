@@ -56,7 +56,8 @@ public class CommonParser {
 						.getColumnValues().add(value);
 			}));
 		} catch (Exception e) {
-			log.error(e.getMessage());
+			e.printStackTrace();
+//			log.error(e.getMessage());
 		}
 		return new DocumentData(columnDataList, sourcePath);
 	}

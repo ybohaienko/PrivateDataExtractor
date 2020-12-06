@@ -9,8 +9,8 @@ import javax.persistence.*;
 @Entity
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class PhoneNumber extends CommonPd {
-	public PhoneNumber(String value, SourceDocument srcDoc, Individual individual) {
-		super(value, srcDoc, individual);
+public class PhoneNumber extends BasePdTypeValue {
+	public PhoneNumber(String value, SourceDocument document, Individual individual) {
+		super(value, document, individual);
 	}
 }

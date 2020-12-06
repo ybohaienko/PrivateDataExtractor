@@ -2,8 +2,8 @@ package com.bohaienko.pdextractor.service;
 
 import com.bohaienko.pdextractor.model.PrivateDataType;
 import com.bohaienko.pdextractor.model.SourceColumn;
-import com.bohaienko.pdextractor.model.occasional.DocumentData;
 import com.bohaienko.pdextractor.model.SourceDocument;
+import com.bohaienko.pdextractor.model.occasional.DocumentData;
 import com.bohaienko.pdextractor.repository.SourceColumnRepository;
 import com.bohaienko.pdextractor.repository.SourceDocumentRepository;
 import com.bohaienko.pdextractor.service.parser.CommonParser;
@@ -25,18 +25,19 @@ public class PDTypeProcessor {
 	CommonParser commonParser;
 
 	@Autowired
-	SourceDocumentRepository docRepository;
+	private SourceDocumentRepository docRepository;
 
 	@Autowired
-	SourceColumnRepository colRepository;
+	private SourceColumnRepository colRepository;
 
 	public Long processColumnsType(String tempFilePath, int lines, String srcFullPath) {
+		log.info("Recognizing collumns type of found file");
 		DocumentData data = commonParser.getDocumentData(tempFilePath, lines, srcFullPath);
 		DocumentData dataWithColumnTypes = getColumnSpecsByHeaders(data);
 		DocumentData dataWithColumnTypesByValue = getColumnSpecByColumnValues(dataWithColumnTypes);
 
 		dataWithColumnTypesByValue.getColumnData().forEach(columnData -> {
-			log.info("Processing a type of the column with the header: {}", columnData.getHeader());
+			log.debug("Processing a type of the column with the header: {}", columnData.getHeader());
 
 			Map<PrivateDataType, Integer> scoreSet = columnData.getColumnTypeScoresByColumnValues();
 			int dictRecognizedHighestValue = columnData.getColumnTypeScoresByColumnValues() != null
@@ -54,19 +55,32 @@ public class PDTypeProcessor {
 			}
 		});
 
-		SourceDocument doc = docRepository.save(
-				new SourceDocument(
-						getFileNameByFullPath(srcFullPath),
-						getLocationByFullPath(srcFullPath))
-		);
-		dataWithColumnTypesByValue.getColumnData().forEach(c -> colRepository.save(
-				new SourceColumn(
-						c.getPositionNumber(),
-						c.getHeader(),
-						c.getExpectedColumnType().name(),
-						doc
-				)));
+		SourceDocument doc = saveDocumentByPath(srcFullPath);
+		dataWithColumnTypesByValue.getColumnData().forEach(c -> saveColumn(
+				c.getPositionNumber(),
+				c.getHeader(),
+				c.getExpectedColumnType().name(),
+				doc));
 		return doc.getId();
+	}
+
+	SourceColumn saveColumn(int positionNum, String header, String expectedColumnType, SourceDocument doc) {
+		Long docId = doc.getId();
+		return colRepository
+				.findBycolPosNumAndColHeaderAndColPdTypeAndDocumentId(positionNum, header, expectedColumnType, docId)
+				.stream().findFirst()
+				.orElseGet(() -> colRepository.save(
+						new SourceColumn(positionNum, header, expectedColumnType, doc)));
+	}
+
+	SourceDocument saveDocumentByPath(String fullPath) {
+		String fileName = getFileNameByFullPath(fullPath);
+		String filePath = getLocationByFullPath(fullPath);
+		return docRepository
+				.findByDocumentNameAndDocumentPath(fileName, filePath)
+				.stream().findFirst()
+				.orElseGet(() -> docRepository.save(
+						new SourceDocument(fileName, filePath)));
 	}
 
 	private DocumentData getColumnSpecByColumnValues(DocumentData data) {

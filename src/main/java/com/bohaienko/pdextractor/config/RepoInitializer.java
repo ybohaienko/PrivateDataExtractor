@@ -55,8 +55,8 @@ public class RepoInitializer {
 	@Autowired
 	private WorkingPlaceRepository workingPlaceRepository;
 
-	public Map<PrivateDataType, CommonPdRepository> getRepositories() {
-		Map<PrivateDataType, CommonPdRepository> map = new HashMap<>();
+	public Map<PrivateDataType, BasePdTypeValueRepository> getRepositories() {
+		Map<PrivateDataType, BasePdTypeValueRepository> map = new HashMap<>();
 		map.put(PrivateDataType.TYPE_FIRST_NAME, firstNameRepository);
 		map.put(PrivateDataType.TYPE_SECOND_NAME, secondNameRepository);
 		map.put(PrivateDataType.TYPE_FATHERS_NAME, fathersNameRepository);

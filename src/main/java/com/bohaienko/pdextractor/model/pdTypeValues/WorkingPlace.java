@@ -13,7 +13,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @ToString
-public class WorkingPlace extends CommonPd {
+public class WorkingPlace extends BasePdTypeValue {
 	@Id
 	@NotNull
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,15 +24,15 @@ public class WorkingPlace extends CommonPd {
 
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "document_id", nullable = false)
-	private SourceDocument srcDoc;
+	private SourceDocument document;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "individual_id")
 	private Individual individual;
 
-	public WorkingPlace(String value, SourceDocument srcDoc, Individual individual) {
+	public WorkingPlace(String value, SourceDocument document, Individual individual) {
 		this.value = value;
-		this.srcDoc = srcDoc;
+		this.document = document;
 		this.individual = individual;
 	}
 }

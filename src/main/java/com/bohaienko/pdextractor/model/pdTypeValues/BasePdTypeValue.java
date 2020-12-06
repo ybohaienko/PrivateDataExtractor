@@ -14,22 +14,25 @@ import javax.persistence.*;
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @Table(uniqueConstraints = @UniqueConstraint(columnNames = {"value", "document_id", "individual_id"}))
 @NoArgsConstructor
-public class CommonPd {
+public class BasePdTypeValue {
 	@Id
 	@GeneratedValue
 	private Long id;
 
 	private String value;
 
-	@ManyToOne(fetch = FetchType.EAGER, optional = false)
-	@JoinColumn(name = "document_id", nullable = false,insertable = false,updatable = false)
+	@ManyToOne(fetch = FetchType.EAGER, optional = false,cascade = CascadeType.MERGE)
+	@JoinColumn(name = "document_id",
+			nullable = false,
+			insertable = false,
+			updatable = false)
 	private SourceDocument sourceDocument;
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "individual_id")
 	private Individual individual;
 
-	public CommonPd(String value, SourceDocument sourceDocument, Individual individual) {
+	public BasePdTypeValue(String value, SourceDocument sourceDocument, Individual individual) {
 		this.value = value;
 		this.sourceDocument = sourceDocument;
 		this.individual = individual;
