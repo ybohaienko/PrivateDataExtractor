@@ -4,10 +4,7 @@ import com.bohaienko.pdextractor.model.message.DropBoxToken;
 import com.bohaienko.pdextractor.model.message.ResponseMessagesTexts;
 import com.bohaienko.pdextractor.model.message.ResponseStatusMessage;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import static com.bohaienko.pdextractor.utils.Commons.timestamp;
 
@@ -40,7 +37,7 @@ class DropBoxController extends BaseController {
 		return new ResponseStatusMessage(ResponseMessagesTexts.SUCCESS);
 	}
 
-	@PostMapping("/status")
+	@GetMapping("/status")
 	private ResponseStatusMessage status() {
 		boolean status = false;
 		try {
