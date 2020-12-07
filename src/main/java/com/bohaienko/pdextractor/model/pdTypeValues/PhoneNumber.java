@@ -9,8 +9,9 @@ import javax.persistence.*;
 @Entity
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
 public class PhoneNumber extends BasePdTypeValue {
-	public PhoneNumber(String value, SourceDocument document, Individual individual) {
-		super(value, document, individual);
+	public PhoneNumber(String value, String pdType, SourceDocument document, Individual individual) {
+		super(value, pdType, document, individual);
 	}
 }

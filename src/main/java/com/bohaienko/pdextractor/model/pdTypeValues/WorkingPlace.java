@@ -12,7 +12,7 @@ import javax.persistence.*;
 @Setter
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-@ToString
+@ToString(callSuper = true)
 public class WorkingPlace extends BasePdTypeValue {
 	@Id
 	@NotNull
@@ -30,7 +30,7 @@ public class WorkingPlace extends BasePdTypeValue {
 	@JoinColumn(name = "individual_id")
 	private Individual individual;
 
-	public WorkingPlace(String value, SourceDocument document, Individual individual) {
+	public WorkingPlace(String value, String pdType, SourceDocument document, Individual individual) {
 		this.value = value;
 		this.document = document;
 		this.individual = individual;

@@ -9,8 +9,9 @@ import javax.persistence.*;
 @Entity
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
 public class PassportNumber extends BasePdTypeValue {
-	public PassportNumber(String value, SourceDocument document, Individual individual) {
-		super(value, document, individual);
+	public PassportNumber(String value, String pdType, SourceDocument document, Individual individual) {
+		super(value, pdType, document, individual);
 	}
 }

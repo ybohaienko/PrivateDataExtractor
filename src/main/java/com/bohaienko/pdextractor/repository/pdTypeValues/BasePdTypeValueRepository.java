@@ -10,4 +10,5 @@ import java.util.List;
 public interface BasePdTypeValueRepository<T, U> extends JpaRepository<T, U> {
 	@SuppressWarnings("EmptyMethod")
 	List<? extends BasePdTypeValue> findByValue(String value);
+	List<? extends BasePdTypeValue> findByIndividualId(Long indId);
 }

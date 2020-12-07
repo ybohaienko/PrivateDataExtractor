@@ -1,7 +1,7 @@
 package com.bohaienko.pdextractor.controller;
 
 import com.bohaienko.pdextractor.model.message.DropBoxToken;
-import com.bohaienko.pdextractor.model.message.MessageStatuses;
+import com.bohaienko.pdextractor.model.message.ResponseMessagesTexts;
 import com.bohaienko.pdextractor.model.message.ResponseStatusMessage;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,7 +26,7 @@ class DropBoxController extends BaseController {
 		} catch (Exception e) {
 			log.error(e.getMessage());
 		}
-		return new ResponseStatusMessage(MessageStatuses.SUCCESS);
+		return new ResponseStatusMessage(ResponseMessagesTexts.SUCCESS);
 	}
 
 	@PostMapping("/stop")
@@ -37,7 +37,7 @@ class DropBoxController extends BaseController {
 			log.info("STOPPED DropBox crawling process at: {}", timestamp());
 		} catch (InterruptedException | NullPointerException ignored) {
 		}
-		return new ResponseStatusMessage(MessageStatuses.SUCCESS);
+		return new ResponseStatusMessage(ResponseMessagesTexts.SUCCESS);
 	}
 
 	@PostMapping("/status")
@@ -48,6 +48,6 @@ class DropBoxController extends BaseController {
 			log.info("REQUESTED DropBox crawling process state: {}", timestamp());
 		} catch (NullPointerException ignored) {
 		}
-		return new ResponseStatusMessage(status ? MessageStatuses.ACTIVE : MessageStatuses.STOPPED);
+		return new ResponseStatusMessage(status ? ResponseMessagesTexts.ACTIVE : ResponseMessagesTexts.STOPPED);
 	}
 }

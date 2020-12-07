@@ -5,6 +5,7 @@ import com.bohaienko.pdextractor.model.SourceDocument;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.*;
 
@@ -14,12 +15,14 @@ import javax.persistence.*;
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @Table(uniqueConstraints = @UniqueConstraint(columnNames = {"value", "document_id", "individual_id"}))
 @NoArgsConstructor
+@ToString
 public class BasePdTypeValue {
 	@Id
 	@GeneratedValue
 	private Long id;
 
 	private String value;
+	private String pdType;
 
 	@ManyToOne(fetch = FetchType.EAGER, optional = false)
 	@JoinColumn(name = "document_id", nullable = false)
@@ -29,8 +32,9 @@ public class BasePdTypeValue {
 	@JoinColumn(name = "individual_id")
 	private Individual individual;
 
-	public BasePdTypeValue(String value, SourceDocument document, Individual individual) {
+	public BasePdTypeValue(String value, String pdType, SourceDocument document, Individual individual) {
 		this.value = value;
+		this.pdType = pdType;
 		this.document = document;
 		this.individual = individual;
 	}

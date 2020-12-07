@@ -9,8 +9,9 @@ import javax.persistence.*;
 @Entity
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
 public class AddressCity extends BasePdTypeValue {
-	public AddressCity(String value, SourceDocument document, Individual individual) {
-		super(value, document, individual);
+	public AddressCity(String value, String pdType, SourceDocument document, Individual individual) {
+		super(value, pdType, document, individual);
 	}
 }
