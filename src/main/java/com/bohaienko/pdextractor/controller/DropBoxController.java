@@ -42,7 +42,7 @@ class DropBoxController extends BaseController {
 		boolean status = false;
 		try {
 			status = thread.isAlive();
-			log.info("REQUESTED DropBox crawling process state: {}", timestamp());
+			log.debug("REQUESTED DropBox crawling process state: {}", timestamp());
 		} catch (NullPointerException ignored) {
 		}
 		return new ResponseStatusMessage(status ? ResponseMessagesTexts.ACTIVE : ResponseMessagesTexts.STOPPED);
