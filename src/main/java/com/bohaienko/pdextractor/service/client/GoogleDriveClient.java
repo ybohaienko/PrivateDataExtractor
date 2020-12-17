@@ -12,9 +12,7 @@ import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.client.util.store.FileDataStoreFactory;
 import com.google.api.services.drive.Drive;
 import com.google.api.services.drive.DriveScopes;
-import com.google.api.services.drive.model.File;
 import com.google.api.services.drive.model.FileList;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
@@ -24,7 +22,6 @@ import java.util.List;
 
 @Service
 public class GoogleDriveClient {
-	@Value("${service.gdv.root.folder}")
 	private String rootFolderId = "1wpI90uLF-9LknHzDqsp2IhaK11QjkRjG";
 
 	private static final String APPLICATION_NAME = "Google Drive API Java Quickstart";

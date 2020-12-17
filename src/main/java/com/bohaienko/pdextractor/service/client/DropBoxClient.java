@@ -7,7 +7,6 @@ import com.dropbox.core.v2.files.FileMetadata;
 import com.dropbox.core.v2.files.ListFolderResult;
 import com.dropbox.core.v2.files.Metadata;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.FileOutputStream;
@@ -22,20 +21,10 @@ import java.util.List;
 @Component
 public class DropBoxClient {
 
-	@Value("${service.dpx.token}")
-	public String ACCESS_TOKEN;
-
 	private static DbxClientV2 client;
-	private DbxRequestConfig config;
-
-	public List<Path> enableDpxDiscovery() {
-		config = new DbxRequestConfig("DipAcc");
-		client = new DbxClientV2(config, ACCESS_TOKEN);
-		return retrieveFilePaths();
-	}
 
 	public List<Path> enableDpxDiscoveryForToken(String accessToken) {
-		config = new DbxRequestConfig("DipAcc");
+		DbxRequestConfig config = new DbxRequestConfig("DipAcc");
 		client = new DbxClientV2(config, accessToken);
 		return retrieveFilePaths();
 	}
