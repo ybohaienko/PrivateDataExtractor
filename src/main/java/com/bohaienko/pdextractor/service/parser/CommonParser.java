@@ -49,15 +49,16 @@ public class CommonParser {
 					)
 			));
 			data.forEach(row -> row.forEach((header, value) -> {
-				columnDataList.stream()
-						.filter(e -> e.getHeader().equals(header))
-						.findAny()
-						.orElseThrow(IllegalArgumentException::new)
-						.getColumnValues().add(value);
+				if (!value.isEmpty())
+					columnDataList.stream()
+							.filter(e -> e.getHeader().equals(header))
+							.findAny()
+							.orElseThrow(IllegalArgumentException::new)
+							.getColumnValues().add(value);
 			}));
 		} catch (Exception e) {
 			e.printStackTrace();
-//			log.error(e.getMessage());
+			log.error(e.getMessage());
 		}
 		return new DocumentData(columnDataList, sourcePath);
 	}

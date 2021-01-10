@@ -1,0 +1,37 @@
+@startuml
+class SourceRepoClient {
+    + enableConnection()
+    + retrieveFilePaths()
+    + downloadFiles()
+}
+
+class FileParser {
+    + parseToDocumentData()
+    + getRawData()
+    + getDocumentData()
+}
+
+class FileProcessor {
+    + retrievePayloadFromFileByDocument()
+}
+
+class PdTypeProcessor {
+    + checkRegex()
+    + checkDictionaries()
+    + checkFreeText()
+    + getColumnSpecsByHeaders()
+    + getColumnSpecByColumnValues()
+    + processColumnsType()
+}
+
+class PdProcessor {
+    + checkValuesUnique()
+    + checkUniqueSetExistsForIndividual()
+    + process()
+    + saveAttributes()
+}
+SourceRepoClient <-- FileParser
+FileParser <-- FileProcessor
+FileProcessor <-- PdTypeProcessor
+PdTypeProcessor <-- PdProcessor
+@enduml

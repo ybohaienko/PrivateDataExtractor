@@ -32,7 +32,7 @@ public class CrawlingHandler {
 		//noinspection ResultOfMethodCallIgnored
 		tempDir.mkdir();
 		ddxService.enableDpxDiscoveryForToken(accessToken).forEach(filePath -> {
-			FileMetadata metadata = ddxService.downloadDdxFiles(filePath, tempDir.getPath() + File.separator);
+			FileMetadata metadata = ddxService.downloadFiles(filePath, tempDir.getPath() + File.separator);
 
 			String tempLocalFilePath = tempDir.getPath() + File.separator + metadata.getName();
 			int pdTypeProcessorFileLines = 10;

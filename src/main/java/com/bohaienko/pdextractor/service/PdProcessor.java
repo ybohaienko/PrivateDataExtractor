@@ -90,7 +90,7 @@ public class PdProcessor {
 						.findByValue(filteredPdValue.getValue());
 				list.forEach(e -> {
 					Long foundId = e.getIndividual().getId();
-					if (some(foundId, pdType, uniqueTypesSet.length))
+					if (checkValuesUnique(foundId, pdType, uniqueTypesSet.length))
 						individualId.set(foundId);
 				});
 			});
@@ -98,7 +98,7 @@ public class PdProcessor {
 		return individualId.get();
 	}
 
-	private boolean some(Long foundId, PrivateDataType pdType, int uniqueTypesSetLength) {
+	private boolean checkValuesUnique(Long foundId, PrivateDataType pdType, int uniqueTypesSetLength) {
 		boolean result = false;
 		Map<PrivateDataType, Integer> typesOccurrence = occurrences.get(foundId);
 		if (typesOccurrence == null)

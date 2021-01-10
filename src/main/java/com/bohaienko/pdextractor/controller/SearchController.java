@@ -2,7 +2,6 @@ package com.bohaienko.pdextractor.controller;
 
 import com.bohaienko.pdextractor.config.RepoInitializer;
 import com.bohaienko.pdextractor.model.pdTypeValues.BasePdTypeValue;
-import com.bohaienko.pdextractor.repository.IndividualRepository;
 import com.bohaienko.pdextractor.repository.pdTypeValues.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,9 +22,6 @@ import static com.bohaienko.pdextractor.utils.Commons.removeDuplicates;
 @RestController
 @RequestMapping("/search-by")
 class SearchController {
-
-	@Autowired
-	private IndividualRepository individualRepository;
 
 	@Autowired
 	private PassportNumberRepository passportNumberRepository;

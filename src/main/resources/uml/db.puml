@@ -1,0 +1,73 @@
+@startuml
+class SourceDocument {
+    - id : Long
+    - documentName : String
+    - documentPath : String
+    --
+    + SourceDocument(String, String)
+    --
+    + getters
+    + setters
+    + toString()
+    + equals()
+    + hashcode()
+}
+
+class SourceColumn {
+    - id : Long
+    - colPosNum : Int
+    - colHeader : String
+    - colPdType : String
+    - document : SourceDocument
+    --
+    + SourceColumn(Int, String, String, SourceDocument)
+    --
+    + getters
+    + setters
+    + toString()
+    + equals()
+    + hashcode()
+}
+
+class Individual {
+    - id : Long
+    - uuid : UUID
+    --
+    + Individual(uuid)
+    --
+    + getters
+    + setters
+    + toString()
+    + equals()
+    + hashcode()
+}
+
+class BasePdTypeValue {
+        - id : Long
+        - value : String
+        - type : SourceDocument
+        - document : Document
+        - individual : Individual
+        --
+        + BasePdTypeValue(String, String, SourceDocument, Individual)
+        --
+            + getters
+            + setters
+            + toString()
+            + equals()
+            + hashcode()
+}
+
+class SpecificPdTypeValue {
+        + SpecificPdTypeValue(String, String, SourceDocument, Individual)
+        --
+            + toString()
+            + equals()
+            + hashcode()
+}
+
+Individual "1" *-- "*" BasePdTypeValue
+SourceDocument "1" *-- "*" BasePdTypeValue
+SourceDocument "1" *-- "*" SourceColumn
+BasePdTypeValue <|-- SpecificPdTypeValue
+@enduml

@@ -29,7 +29,7 @@ public class DropBoxClient {
 		return retrieveFilePaths();
 	}
 
-	public FileMetadata downloadDdxFiles(Path srcPath, String outputPath) {
+	public FileMetadata downloadFiles(Path srcPath, String outputPath) {
 		OutputStream downloadFile = null;
 		FileMetadata metadata = null;
 		log.info("Downloading discovered file: {}", srcPath);

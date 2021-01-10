@@ -1,6 +1,6 @@
 package com.bohaienko.pdextractor.controller;
 
-import com.bohaienko.pdextractor.model.message.DropBoxToken;
+import com.bohaienko.pdextractor.model.message.AccessToken;
 import com.bohaienko.pdextractor.model.message.ResponseMessagesTexts;
 import com.bohaienko.pdextractor.model.message.ResponseStatusMessage;
 import lombok.extern.log4j.Log4j2;
@@ -14,8 +14,8 @@ import static com.bohaienko.pdextractor.utils.Commons.timestamp;
 class DropBoxController extends BaseController {
 
 	@PostMapping("/start")
-	private ResponseStatusMessage start(@RequestBody DropBoxToken dropBoxToken) {
-		thread = new Thread(() -> crawlingHandler.crawlDropbox(dropBoxToken.getToken()));
+	private ResponseStatusMessage start(@RequestBody AccessToken accessToken) {
+		thread = new Thread(() -> crawlingHandler.crawlDropbox(accessToken.getToken()));
 		try {
 			log.info("================== Crawling cycle num: {} ==================", cycleCounter++);
 			thread.start();

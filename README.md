@@ -11,9 +11,13 @@
 ```
 git clone <REMOTE REPOSITORY>
 ```
-- Run command
+- Run command to install Maven project
 ```
 mvn clean install 
+```
+- Run command to setup Database
+```
+docker-compose up -d
 ```
  
 ## Run
@@ -30,3 +34,5 @@ Backend application port: 8079
  
 ### Service Endpoints
 REST API base path: /api
+API docs path: /api/docs
+Swagger path: /api/swagger

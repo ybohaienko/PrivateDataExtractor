@@ -1,0 +1,45 @@
+@startuml
+class DocumentData {
+    - columnData : List<ColumnData>
+    - path : String
+    --
+    + DocumentData(List<ColumnData>, String)
+    --
+    + getters
+    + setters
+    + toString()
+    + equals()
+    + hashcode()
+}
+
+class ColumnData {
+    - positionNumber : Integer
+    - header : String
+    - columnValues : List<String>
+    - expectedColumnType : PrivateDataType
+    - columnTypeScoresByColumnValues : Map<PrivateDataType, Integer>
+    --
+    + SourceColumn(Integer, String, List<String>, PrivateDataType, Map<PrivateDataType, Integer>)
+    --
+    + getters
+    + setters
+    + toString()
+    + equals()
+    + hashcode()
+}
+
+class PrivateDataValue {
+        - type : PrivateDataType
+        - value : string
+        - fullPath : string
+        --
+        + PrivateDataValue(type, value, fullPath)
+        --
+            + toString()
+            + equals()
+            + hashcode()
+}
+
+DocumentData <-- ColumnData
+ColumnData <-- PrivateDataValue
+@enduml
