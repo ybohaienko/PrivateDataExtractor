@@ -38,7 +38,7 @@ public class PdProcessor {
 	private Map<PrivateDataType, BasePdTypeValueRepository> repos;
 
 	void process(List<List<PrivateDataValue>> payload) {
-		log.info("Processing exctracted payload from found file");
+		log.info("Processing extracted payload from found file");
 
 		repos = repoInitializer.getRepositories();
 
